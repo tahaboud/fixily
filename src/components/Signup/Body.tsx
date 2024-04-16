@@ -1,10 +1,13 @@
 import { Box, Button, TextField } from "@mui/material";
-import { useState } from "react";
-import { useAppDispatch } from "../../hooks";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { signup } from "../state/actions/authActions";
 
 const Body = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
@@ -12,7 +15,11 @@ const Body = () => {
   const signUp = () => {
     dispatch(signup({ email, password }));
   };
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
   return (
     <Box>
       <TextField

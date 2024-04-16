@@ -1,10 +1,13 @@
 import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import { useState } from "react";
-import { useAppDispatch } from "../../hooks";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { login } from "../state/actions/authActions";
 
 const Body = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string> | null>(null);
@@ -15,6 +18,11 @@ const Body = () => {
   }) => {
     dispatch(login({ email, password, provider }));
   };
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/");
+    }
+  }, [isAuthenticated]);
   return (
     <Container maxWidth="xl">
       <Box>

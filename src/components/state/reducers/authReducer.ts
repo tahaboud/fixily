@@ -8,6 +8,7 @@ const initialState: AuthState = {
   accessToken: null,
   refreshToken: null,
   data: null,
+  details: null,
 };
 
 export default (
@@ -20,11 +21,7 @@ export default (
 
     case ActionEnums.SIGN_IN_SUCCESS:
     case ActionEnums.SIGN_UP_SUCCESS:
-      localStorage.setItem("accessToken", payload.stsTokenManager.accessToken);
-      localStorage.setItem(
-        "refreshToken",
-        payload.stsTokenManager.refreshToken
-      );
+    case ActionEnums.GET_USER_SUCCESS:
       return {
         ...state,
         userIsLoading: false,
@@ -34,9 +31,22 @@ export default (
         data: payload,
       };
 
+    case ActionEnums.GET_USER_DETAILS_SUCCESS:
+      return {
+        ...state,
+        details: payload,
+      };
+    case ActionEnums.GET_USER_DETAILS_FAIL:
+      return {
+        ...state,
+        details: null,
+      };
+
     case ActionEnums.SIGN_IN_FAIL:
     case ActionEnums.SIGN_UP_FAIL:
-      localStorage.clear();
+    case ActionEnums.SIGNOUT_SUCCESS:
+    case ActionEnums.SIGNOUT_FAIL:
+    case ActionEnums.GET_USER_FAIL:
       return initialState;
 
     default:
