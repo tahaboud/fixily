@@ -1,10 +1,11 @@
 import {
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import {
   auth,
   db,
@@ -12,7 +13,6 @@ import {
   googleProvider,
 } from "../../../config/firebase";
 import { AppDispatch } from "../../../store";
-import { UserData } from "../../../types";
 import { ActionEnums } from "../types/actionEnums";
 import { LoginActionParams, SignupActionParams } from "./types";
 
@@ -41,10 +41,7 @@ export const login =
               type: ActionEnums.SIGN_IN_SUCCESS,
               payload: res.user.toJSON(),
             });
-            createUserDetails({
-              userData: res.user.toJSON() as UserData,
-              dispatch,
-            });
+            dispatch(getUserDetails({ uid: res.user.uid }));
           })
           .catch((err) =>
             dispatch({ type: ActionEnums.SIGN_IN_FAIL, payload: err.code })
@@ -57,10 +54,7 @@ export const login =
               type: ActionEnums.SIGN_IN_SUCCESS,
               payload: res.user.toJSON(),
             });
-            createUserDetails({
-              userData: res.user.toJSON() as UserData,
-              dispatch,
-            });
+            dispatch(getUserDetails({ uid: res.user.uid }));
           })
           .catch((err) =>
             dispatch({ type: ActionEnums.SIGN_IN_FAIL, payload: err.code })
@@ -81,10 +75,8 @@ export const signup =
           type: ActionEnums.SIGN_UP_SUCCESS,
           payload: res.user.toJSON(),
         });
-        createUserDetails({
-          userData: res.user.toJSON() as UserData,
-          dispatch,
-        });
+        dispatch(getUserDetails({ uid: res.user.uid }));
+        sendEmailVerification(res.user);
       })
       .catch((err) =>
         dispatch({ type: ActionEnums.SIGN_UP_FAIL, payload: err.code })
@@ -128,30 +120,3 @@ export const getUserDetails =
         dispatch({ type: ActionEnums.GET_USER_DETAILS_FAIL, payload: err })
       );
   };
-
-const createUserDetails = async ({
-  userData,
-  dispatch,
-}: {
-  userData: UserData;
-  dispatch: AppDispatch;
-}) => {
-  const userDetailsRef = doc(db, "users", userData.uid);
-  const userDetails = await getDoc(userDetailsRef);
-  if (!userDetails.exists()) {
-    await setDoc(userDetailsRef, {
-      email: userData.email,
-      emailVerified: userData.emailVerified,
-      displayName: userData.providerData.displayName ?? null,
-      phoneNumber: userData.providerData.phoneNumber ?? null,
-      photoUrl: userData.providerData.photoURL ?? null,
-      isSuperadmin: false,
-      isAdmin: false,
-      points: 15,
-      isArtisan: false,
-      isVerified: false,
-      createdAt: userData.createdAt,
-    });
-  }
-  dispatch(getUserDetails({ uid: userData.uid }));
-};

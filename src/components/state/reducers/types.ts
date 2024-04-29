@@ -9,7 +9,7 @@ export interface AuthState {
   details: UserDetails | null;
 }
 
-export interface UsersState {
-  usersIsLoading: boolean;
+export interface AdminState {
+  adminIsLoading: boolean;
   allUsers: Array<AllUsersData> | null;
 }

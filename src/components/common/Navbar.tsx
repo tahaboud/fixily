@@ -25,7 +25,7 @@ const Navbar = () => {
           <Box>
             {isAuthenticated ? (
               <>
-                {details && details.is_admin && (
+                {details && details.isAdmin && (
                   <Button
                     variant="contained"
                     onClick={() => navigate("/admin")}

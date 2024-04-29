@@ -1,10 +1,10 @@
 import { combineReducers } from "redux";
+import adminReducer from "./adminReducer";
 import authReducer from "./authReducer";
-import usersReducer from "./usersReducer";
 
 const reducers = combineReducers({
   auth: authReducer,
-  users: usersReducer,
+  admin: adminReducer,
 });
 export default reducers;
 export type State = ReturnType<typeof reducers>;

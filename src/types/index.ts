@@ -23,7 +23,8 @@ export interface UserDetails {
   emailVerified: boolean;
   isAdmin: boolean;
   isArtisan: boolean;
-  isSuperadmin: boolean;
+  isSuperuser: boolean;
+  disabled: boolean;
   isVerified: boolean;
   phoneNumber: string | null;
   photoUrl: string | null;
@@ -35,12 +36,13 @@ export interface AllUsersData {
   displayName: null | string;
   email: string;
   emailVerified: boolean;
-  is_admin: boolean;
-  is_artisan: boolean;
-  is_superadmin: boolean;
-  is_verified: boolean;
+  isAdmin: boolean;
+  isArtisan: boolean;
+  isSuperuser: boolean;
+  disabled: boolean;
+  isVerified: boolean;
   phoneNumber: string | null;
   photoUrl: string | null;
   points: number;
-  createdAt: string;
+  createdAt: number;
 }

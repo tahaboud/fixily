@@ -1,75 +1,20 @@
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { login } from "../state/actions/authActions";
+import { Box, Container, Tab, Tabs } from "@mui/material";
+import { useState } from "react";
+import ArtisanLogin from "./ArtisanLogin";
+import ClientLogin from "./ClientLogin";
 
 const Body = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<Record<string, string> | null>(null);
-  const signIn = ({
-    provider,
-  }: {
-    provider: "email" | "google" | "facebook";
-  }) => {
-    dispatch(login({ email, password, provider }));
-  };
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated]);
+  const [tab, setTab] = useState<"clientLogin" | "artisanLogin">("clientLogin");
+
   return (
     <Container maxWidth="xl">
       <Box>
-        <Typography>Sign In</Typography>
-        <TextField
-          fullWidth
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrors((current) => {
-              const currentErrors = { ...current };
-              if (current && current.email) {
-                delete currentErrors.email;
-              }
-              return currentErrors;
-            });
-          }}
-          placeholder="Email..."
-          error={errors !== null && errors.email !== undefined}
-          helperText={errors && errors.email ? errors.email : null}
-        />
-        <TextField
-          fullWidth
-          type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setErrors((current) => {
-              const currentErrors = { ...current };
-              if (current && current.password) {
-                delete currentErrors.password;
-              }
-              return currentErrors;
-            });
-          }}
-          placeholder="Password..."
-          error={errors !== null && errors.password !== undefined}
-          helperText={errors && errors.password ? errors.password : null}
-        />
-        <Button onClick={() => signIn({ provider: "email" })}>Sign In</Button>
-        <Button onClick={() => signIn({ provider: "google" })}>
-          Sign In with google
-        </Button>
-        <Button onClick={() => signIn({ provider: "facebook" })}>
-          Sign In with facebook
-        </Button>
+        <Tabs value={tab} onChange={(_event, value) => setTab(value)}>
+          <Tab label="Client Login" value={"clientLogin"} />
+          <Tab label="Artisan Login" value={"artisanLogin"} />
+        </Tabs>
       </Box>
+      {tab === "clientLogin" ? <ClientLogin /> : <ArtisanLogin />}
     </Container>
   );
 };

@@ -17,7 +17,7 @@ function App() {
   const { isAuthenticated, details } = useAppSelector((state) => state.auth);
   useEffect(() => {
     onAuthStateChanged(auth, () => dispatch(getUser()));
-  }, []);
+  }, [dispatch]);
 
   return (
     <Router>
