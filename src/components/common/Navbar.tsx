@@ -1,14 +1,18 @@
 import { Box, Button, Container, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { logout } from "../state/actions/authActions";
+import { logout } from "../../state/actions/authActions";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isAuthenticated, details } = useAppSelector((state) => state.auth);
+  const { isAuthenticated, data, token } = useAppSelector(
+    (state) => state.auth
+  );
   const onLogout = () => {
-    dispatch(logout());
+    if (token) {
+      dispatch(logout({ token }));
+    }
   };
   return (
     <Box sx={{ backgroundColor: "#FFFFFF" }}>
@@ -25,7 +29,7 @@ const Navbar = () => {
           <Box>
             {isAuthenticated ? (
               <>
-                {details && details.isAdmin && (
+                {data && data.is_admin && (
                   <Button
                     variant="contained"
                     onClick={() => navigate("/admin")}
