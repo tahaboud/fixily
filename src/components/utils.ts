@@ -9,6 +9,6 @@ export const generateSocialLoginUrl = (
   } else {
     return `${import.meta.env.VITE_REACT_APP_GOOGLE_LOGIN_URL}&client_id=${
       import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID
-    }&scope=openid email profile&redirect_uri=http://127.0.0.1:8000&state=${stateCode}`;
+    }&scope=openid email profile&redirect_uri=http://localhost:5173/login/client&state=${stateCode}`;
   }
 };

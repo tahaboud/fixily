@@ -597,7 +597,7 @@ const ArtisanSignUp = () => {
             </Box>
             <Box
               sx={{
-                margin: "1em 0",
+                margin: "1em 0 0 0",
                 width: "100%",
                 display: "flex",
                 gap: "1em",
@@ -633,14 +633,14 @@ const ArtisanSignUp = () => {
               >
                 {t("Continuer")}
               </Button>
-              {otpCounter !== 0 && (
-                <Typography
-                  sx={{ width: "100%", textAlign: "end", color: "#959EA7" }}
-                >
-                  {`${otpCounter}s`}
-                </Typography>
-              )}
             </Box>
+            {otpCounter !== 0 && (
+              <Typography
+                sx={{ width: "100%", textAlign: "end", color: "#959EA7" }}
+              >
+                {`${otpCounter}s`}
+              </Typography>
+            )}
             <Button
               sx={{ width: "100%", textTransform: "none", color: "#447EEF" }}
               variant="text"
