@@ -91,8 +91,7 @@ const ArtisanLogin = () => {
               setErrors(null);
             }}
             maskChar={" "}
-          >
-            {() => (
+            children={
               <TextField
                 type="tel"
                 error={errors !== null && errors.phoneNumber !== undefined}
@@ -114,8 +113,8 @@ const ArtisanLogin = () => {
                   },
                 }}
               />
-            )}
-          </InputMask>
+            }
+          />
         </Box>
         <Box sx={{ width: "100%" }}>
           <Typography sx={{ color: "#2C3E50", fontWeight: "500" }}>

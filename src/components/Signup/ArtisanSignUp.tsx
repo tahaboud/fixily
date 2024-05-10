@@ -1,5 +1,3 @@
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
-
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DescriptionIcon from "@mui/icons-material/Description";
 import EmailIcon from "@mui/icons-material/Email";
@@ -7,6 +5,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import InputMask from "react-input-mask";
@@ -67,7 +66,7 @@ const ArtisanSignUp = () => {
         navigate("/");
       }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, navigate, registrationStep]);
   const handleArtisanSendOTP = () => {
     const unmaskedPhoneNumber = `+${phoneNumber.replace(/\D/g, "")}`;
     const { isValid, validationErrors } = validateArtisanPhoneNumberSignup({
@@ -498,8 +497,7 @@ const ArtisanSignUp = () => {
                   setErrors(null);
                 }}
                 maskChar={" "}
-              >
-                {() => (
+                children={
                   <TextField
                     type="tel"
                     error={errors !== null && errors.phoneNumber !== undefined}
@@ -521,8 +519,8 @@ const ArtisanSignUp = () => {
                       },
                     }}
                   />
-                )}
-              </InputMask>
+                }
+              />
             </Box>
             <Button
               variant="contained"

@@ -140,8 +140,7 @@ const Artisan = () => {
                     setErrors(null);
                   }}
                   maskChar={" "}
-                >
-                  {() => (
+                  children={
                     <TextField
                       type="tel"
                       error={
@@ -165,8 +164,8 @@ const Artisan = () => {
                         },
                       }}
                     />
-                  )}
-                </InputMask>
+                  }
+                />
               </Box>
               <Button
                 variant="contained"
