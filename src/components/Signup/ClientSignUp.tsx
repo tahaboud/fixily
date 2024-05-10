@@ -38,7 +38,7 @@ const ClientSignUp = () => {
   };
   return (
     <>
-      <Box sx={{ display: "flex", height: "90vh" }}>
+      <Box sx={{ display: "flex", height: "100vh" }}>
         <Box
           sx={{
             width: "75%",

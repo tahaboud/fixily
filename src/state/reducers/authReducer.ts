@@ -55,6 +55,7 @@ export default (
     case ActionEnums.REQUEST_RESET_PASSWORD_SUCCESS:
     case ActionEnums.RESET_PASSWORD_SUCCESS:
     case ActionEnums.RESET_PASSWORD_OTP_SUCCESS:
+    case ActionEnums.SOCIAL_LOGIN_FAIL:
       return {
         ...state,
         errors: null,

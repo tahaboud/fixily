@@ -44,7 +44,7 @@ const ClientLogin = () => {
     provider: "facebook" | "google";
   }) => {
     setWaitingForStateCode(true);
-    setLoginProvider("google");
+    setLoginProvider(provider);
     dispatch(requestStateCode({ provider }));
   };
   useEffect(() => {

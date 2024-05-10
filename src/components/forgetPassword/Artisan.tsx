@@ -112,7 +112,7 @@ const Artisan = () => {
   }, [details, navigate, serverErrors]);
   return (
     <>
-      <Box sx={{ display: "flex", height: "90vh" }}>
+      <Box sx={{ display: "flex", height: "100vh" }}>
         <Box
           sx={{
             width: "25%",
