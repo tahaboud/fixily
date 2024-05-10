@@ -179,7 +179,12 @@ export const sendOTP =
       .then((res) =>
         dispatch({ type: ActionEnums.SEND_OTP_SUCCESS, payload: res.data })
       )
-      .catch(() => dispatch({ type: ActionEnums.SEND_OTP_FAIL }));
+      .catch((err) =>
+        dispatch({
+          type: ActionEnums.SEND_OTP_FAIL,
+          payload: err.response.data,
+        })
+      );
   };
 
 export const verifyOTP =

@@ -10,6 +10,7 @@ import ArtisanSignUp from "./pages/ArtisanSignUp";
 import ClientForgotPassword from "./pages/ClientForgotPassword";
 import ClientLogin from "./pages/ClientLogin";
 import ClientSignUp from "./pages/ClientSignUp";
+import Followup from "./pages/Followup";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -55,6 +56,7 @@ function App() {
             path="/forget-password/artisan"
           />
           <Route element={<Signup />} path="/signup" />
+          <Route element={<Followup />} path="/followup" />
         </Routes>
       </Router>
     </ThemeProvider>

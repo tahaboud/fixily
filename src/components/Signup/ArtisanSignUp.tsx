@@ -1,5 +1,6 @@
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
 
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import DescriptionIcon from "@mui/icons-material/Description";
 import EmailIcon from "@mui/icons-material/Email";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -60,7 +61,11 @@ const ArtisanSignUp = () => {
   >(null);
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      if (registrationStep === "userData") {
+        navigate("/followup");
+      } else {
+        navigate("/");
+      }
     }
   }, [isAuthenticated, navigate]);
   const handleArtisanSendOTP = () => {
@@ -153,6 +158,11 @@ const ArtisanSignUp = () => {
         return { ...currentErrors, lastName: serverErrors.last_name };
       });
     }
+    if (serverErrors && serverErrors.phone_number) {
+      setErrors((currentErrors) => {
+        return { ...currentErrors, phoneNumber: serverErrors.phone_number };
+      });
+    }
   }, [details, serverErrors]);
 
   const startCountdown = () => {
@@ -164,6 +174,12 @@ const ArtisanSignUp = () => {
       setOtpCounter(counter);
       counter -= 1;
     }, 1000) as NodeJS.Timeout;
+  };
+  const handleBack = () => {
+    if (registrationStep === "otp") {
+      setPhoneNumber("+213");
+      setRegistrationStep("phoneNumber");
+    }
   };
   return (
     <Box sx={{ display: "flex", height: "100vh", backgroundColor: "#FFFFFF" }}>
@@ -579,7 +595,25 @@ const ArtisanSignUp = () => {
                 variant="outlined"
               />
             </Box>
-            <Box sx={{ margin: "1em 0", width: "100%" }}>
+            <Box
+              sx={{
+                margin: "1em 0",
+                width: "100%",
+                display: "flex",
+                gap: "1em",
+                alignItems: "center",
+              }}
+            >
+              <IconButton
+                sx={{
+                  backgroundColor: "#000000",
+                  borderRadius: "3px",
+                  "&:hover": { backgroundColor: "#313131" },
+                }}
+                onClick={handleBack}
+              >
+                <ArrowBackIosNewIcon sx={{ color: "#FFFFFF" }} />
+              </IconButton>
               <Button
                 variant="contained"
                 sx={{

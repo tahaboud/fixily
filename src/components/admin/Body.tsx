@@ -1,4 +1,6 @@
+import EngineeringIcon from "@mui/icons-material/Engineering";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import PersonIcon from "@mui/icons-material/Person";
 import {
   Box,
   Button,
@@ -43,6 +45,8 @@ const Body = () => {
   const [isActive, setIsActive] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [clientType, setClientType] = useState<"client" | "artisan">("client");
+  const [filteredUsers, setFilteredUsers] = useState<Array<User>>([]);
   useEffect(() => {
     if (token) {
       dispatch(adminGetUsers({ token }));
@@ -116,11 +120,43 @@ const Body = () => {
       setUserIdBeingEdited(null);
     }
   };
+  useEffect(() => {
+    if (data) {
+      if (clientType === "artisan") {
+        setFilteredUsers(data.filter((user) => user.is_artisan));
+      } else {
+        setFilteredUsers(data.filter((user) => !user.is_artisan));
+      }
+    }
+  }, [data, clientType]);
   return (
-    <>
+    <Box sx={{ backgroundColor: "#FFFFFF" }}>
+      <Box
+        sx={{
+          margin: "1em",
+          display: "flex",
+          alignItems: "center",
+          gap: "1em",
+        }}
+      >
+        <Button
+          variant={clientType === "client" ? "text" : "contained"}
+          onClick={() => setClientType("client")}
+          startIcon={<PersonIcon />}
+        >
+          {t("client")}
+        </Button>
+        <Button
+          variant={clientType === "artisan" ? "text" : "contained"}
+          onClick={() => setClientType("artisan")}
+          startIcon={<EngineeringIcon />}
+        >
+          {t("artisan")}
+        </Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
+          <TableHead sx={{ background: "#e1e1e1" }}>
             <TableRow>
               <TableCell align="center">{t("email")}</TableCell>
               <TableCell align="center">{t("firstName")}</TableCell>
@@ -138,73 +174,72 @@ const Body = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data &&
-              data.map((user) => (
-                <TableRow
-                  key={user.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell align="center">{user.email}</TableCell>
+            {filteredUsers.map((user) => (
+              <TableRow
+                key={user.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">
+                  {user.first_name !== "" ? user.first_name : t("none")}
+                </TableCell>
+                <TableCell align="center">
+                  {user.last_name !== "" ? user.last_name : t("none")}
+                </TableCell>
+                <TableCell align="center">
+                  {user.phone_number && user.phone_number !== ""
+                    ? user.phone_number
+                    : t("none")}
+                </TableCell>
+                <TableCell align="center">
+                  {user.is_email_verified ? t("yes") : t("no")}
+                </TableCell>
+                <TableCell align="center">
+                  {user.is_artisan ? t("yes") : t("no")}
+                </TableCell>
+                <TableCell align="center">
+                  {user.is_id_verified ? t("yes") : t("no")}
+                </TableCell>
+                <TableCell align="center">
+                  {user.is_active ? t("yes") : t("no")}
+                </TableCell>
+                <TableCell align="center">{user.points}</TableCell>
+                {currentUser && currentUser.is_superuser && (
                   <TableCell align="center">
-                    {user.first_name !== "" ? user.first_name : t("none")}
+                    {user.is_admin ? t("yes") : t("no")}
                   </TableCell>
-                  <TableCell align="center">
-                    {user.last_name !== "" ? user.last_name : t("none")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {user.phone_number && user.phone_number !== ""
-                      ? user.phone_number
-                      : t("none")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {user.is_email_verified ? t("yes") : t("no")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {user.is_artisan ? t("yes") : t("no")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {user.is_id_verified ? t("yes") : t("no")}
-                  </TableCell>
-                  <TableCell align="center">
-                    {user.is_active ? t("yes") : t("no")}
-                  </TableCell>
-                  <TableCell align="center">{user.points}</TableCell>
-                  {currentUser && currentUser.is_superuser && (
-                    <TableCell align="center">
-                      {user.is_admin ? t("yes") : t("no")}
-                    </TableCell>
-                  )}
-                  <TableCell align="center">
-                    <IconButton onClick={(e) => handleOpenEdit(e, user.id)}>
-                      <MoreVertIcon />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      open={userIdBeingEdited === user.id}
-                      onClose={handleCloseEdit}
+                )}
+                <TableCell align="center">
+                  <IconButton onClick={(e) => handleOpenEdit(e, user.id)}>
+                    <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={userIdBeingEdited === user.id}
+                    onClose={handleCloseEdit}
+                  >
+                    <MenuItem onClick={() => handleEditUser({ user })}>
+                      {t("profile")}
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() =>
+                        handleEditIsActive({
+                          userId: user.id,
+                          isActive: !user.is_active,
+                        })
+                      }
                     >
-                      <MenuItem onClick={() => handleEditUser({ user })}>
-                        {t("profile")}
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() =>
-                          handleEditIsActive({
-                            userId: user.id,
-                            isActive: !user.is_active,
-                          })
-                        }
-                      >
-                        {user.is_active ? t("deactivate") : t("activate")}
-                      </MenuItem>
-                      <MenuItem
-                        onClick={() => handleDeleteUser({ userId: user.id })}
-                      >
-                        {t("delete")}
-                      </MenuItem>
-                    </Menu>
-                  </TableCell>
-                </TableRow>
-              ))}
+                      {user.is_active ? t("deactivate") : t("activate")}
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => handleDeleteUser({ userId: user.id })}
+                    >
+                      {t("delete")}
+                    </MenuItem>
+                  </Menu>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
@@ -317,7 +352,7 @@ const Body = () => {
           </Box>
         </Box>
       </Modal>
-    </>
+    </Box>
   );
 };
 
