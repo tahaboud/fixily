@@ -342,7 +342,6 @@ const Artisan = () => {
             backgroundImage: `url(${artisanImage})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
-            backgroundPositionY: "50%",
             position: "relative",
           }}
         >

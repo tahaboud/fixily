@@ -194,6 +194,8 @@ const ArtisanLogin = () => {
         sx={{
           width: "75%",
           background: `url(${artisanImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
           position: "relative",
         }}
       >

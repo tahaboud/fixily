@@ -24,6 +24,7 @@ const Body = () => {
         sx={{
           backgroundImage: `url(${clientImage})`,
           backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
           height: "100vh",
           width: "50%",
           position: "relative",
@@ -74,7 +75,9 @@ const Body = () => {
       <Box
         sx={{
           backgroundImage: `url(${artisanImage})`,
+          backgroundSize: "cover",
           height: "100vh",
+          backgroundRepeat: "no-repeat",
           width: "50%",
           position: "relative",
         }}
