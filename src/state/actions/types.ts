@@ -41,6 +41,13 @@ export interface UpdateUserActionParams {
   lastName?: string;
   frontIDImage?: File;
   backIDImage?: File;
+  categories?: Array<string>;
+  subCategories?: Array<string>;
+  wilaya?: string;
+  commune?: string;
+  picture?: File | null;
+  previousWorkPhotos?: FileList;
+  bio?: string;
 }
 export interface AdminUpdateUserActionParams {
   token: string;

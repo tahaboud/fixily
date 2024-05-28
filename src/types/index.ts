@@ -1,3 +1,20 @@
+export interface Wilaya {
+  pk: string;
+  name_ar: string;
+  name_en: string;
+}
+
+export interface Commune {
+  pk: string;
+  name_ar: string;
+  name_en: string;
+}
+
+export interface PreviousWorkPhoto {
+  pk: string;
+  image: string;
+}
+
 export interface User {
   is_active: boolean;
   id: number;
@@ -16,6 +33,15 @@ export interface User {
   commercial_register_number: string | null;
   front_id_image: string | null;
   back_id_image: string | null;
+  categories: Array<string> | null;
+  sub_categories: Array<string> | null;
+  wilaya: Wilaya | null;
+  commune: Commune | null;
+  picture: string | null;
+  years_of_experience: number;
+  bio: string | null;
+  is_on_holiday_mode: boolean;
+  previous_work_photos: Array<PreviousWorkPhoto>;
 }
 
 export interface UserResponse {
@@ -27,4 +53,19 @@ export interface SocialUserResponse {
   user: User;
   token: string;
   is_new_user: boolean;
+}
+
+export interface Category {
+  pk: string;
+  name_ar: string;
+  name_en: string;
+  image: string;
+}
+
+export interface SubCategory {
+  pk: string;
+  name_ar: string;
+  name_en: string;
+  point_cost: number;
+  category: number;
 }

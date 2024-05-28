@@ -54,7 +54,7 @@ const ClientLogin = () => {
     if (waitingForStateCode && details && details.state_code && loginProvider) {
       location.href = generateSocialLoginUrl(loginProvider, details.state_code);
     }
-  }, [details, isAuthenticated, navigate]);
+  }, [details, isAuthenticated, navigate, loginProvider, waitingForStateCode]);
   useEffect(() => {
     const code = searchParams.get("code");
     const state = searchParams.get("state");
@@ -63,7 +63,7 @@ const ClientLogin = () => {
       dispatch(socialLogin({ stateCode: state, code }));
     }
     setErrors(null);
-  }, []);
+  }, [dispatch, searchParams, setSearchParams]);
   const handleEmailLogin = () => {
     const { isValid, validationErrors } = validateClientLogin({
       email,
@@ -92,10 +92,16 @@ const ClientLogin = () => {
       <Box
         sx={{
           height: "100%",
-          width: "75%",
+          width: {
+            xl: "75%",
+            lg: "60%",
+            md: "50%",
+            sm: "0%",
+          },
           backgroundImage: `url(${clientImage})`,
           backgroundSize: "cover",
           backgroundPositionY: "50%",
+          backgroundPositionX: "center",
           backgroundRepeat: "no-repeat",
           position: "relative",
         }}
@@ -117,7 +123,8 @@ const ClientLogin = () => {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          width: "25%",
+          flex: 1,
+          padding: "2em",
         }}
       >
         <img src={logoImage} alt="Fixily" style={{ margin: "1em 0" }} />

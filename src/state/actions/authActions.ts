@@ -376,6 +376,13 @@ export const updateUser =
     frontIDImage,
     backIDImage,
     token,
+    categories,
+    subCategories,
+    wilaya,
+    commune,
+    picture,
+    previousWorkPhotos,
+    bio,
   }: UpdateUserActionParams) =>
   (dispatch: AppDispatch) => {
     dispatch({ type: ActionEnums.AUTH_IS_LOADING });
@@ -400,6 +407,31 @@ export const updateUser =
     if (backIDImage) {
       formData.append("back_id_image", backIDImage);
     }
+    if (wilaya) {
+      formData.append("wilaya", wilaya);
+    }
+    if (commune) {
+      formData.append("commune", commune);
+    }
+    if (picture !== undefined) {
+      formData.append("picture", picture || "");
+    }
+    if (categories) {
+      categories.map((category) => formData.append("categories", category));
+    }
+    if (subCategories) {
+      subCategories.map((subCategory) =>
+        formData.append("categories", subCategory)
+      );
+    }
+    if (previousWorkPhotos) {
+      Array.from(previousWorkPhotos).map((photo, index) =>
+        formData.append(`previous_work_photos[${index}]image`, photo)
+      );
+    }
+    if (bio) {
+      formData.append("bio", bio);
+    }
 
     axios
       .patch(
@@ -411,4 +443,32 @@ export const updateUser =
         dispatch({ type: ActionEnums.UPDATE_USER_SUCCESS, payload: res.data });
       })
       .catch(() => dispatch({ type: ActionEnums.UPDATE_USER_FAIL }));
+  };
+
+export const deletePreviousWorkPhoto =
+  ({ token, photoId }: { token: string; photoId: string }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.AUTH_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    axios
+      .delete(
+        `${
+          import.meta.env.VITE_REACT_APP_API_URL
+        }/auth/artisan/previous-work-photos/${photoId}/`,
+        config
+      )
+      .then(() => {
+        dispatch({ type: ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_SUCCESS });
+        dispatch(getUser({ token }));
+      })
+      .catch(() =>
+        dispatch({ type: ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_FAIL })
+      );
   };
