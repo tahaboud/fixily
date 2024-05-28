@@ -1,4 +1,4 @@
-import { User } from "../../types";
+import { Category, Commune, SubCategory, User, Wilaya } from "../../types";
 
 interface Details {
   state_code?: string;
@@ -21,11 +21,21 @@ export interface AuthState {
   data: User | null;
   details: Details | null;
   errors: Errors | null;
+  userDataFetchedFromToken: boolean;
 }
 
 export interface AdminState {
   adminIsLoading: boolean;
   data: Array<User> | null;
   details: Details | null;
+  errors: Errors | null;
+}
+
+export interface ServicesState {
+  servicesIsLoading: boolean;
+  categories: Array<Category> | null;
+  subCategories: Array<SubCategory> | null;
+  wilayas: Array<Wilaya> | null;
+  communes: Array<Commune> | null;
   errors: Errors | null;
 }

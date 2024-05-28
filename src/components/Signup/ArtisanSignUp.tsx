@@ -30,6 +30,7 @@ import {
 } from "../../validators/types";
 
 const ArtisanSignUp = () => {
+  let interval: NodeJS.Timeout;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
@@ -61,7 +62,7 @@ const ArtisanSignUp = () => {
   useEffect(() => {
     if (isAuthenticated) {
       if (registrationStep === "userData") {
-        navigate("/followup");
+        navigate("/complete-registration");
       } else {
         navigate("/");
       }
@@ -166,7 +167,7 @@ const ArtisanSignUp = () => {
 
   const startCountdown = () => {
     let counter = 60;
-    const interval = setInterval(() => {
+    interval = setInterval(() => {
       if (counter === 0) {
         clearInterval(interval);
       }
@@ -178,19 +179,20 @@ const ArtisanSignUp = () => {
     if (registrationStep === "otp") {
       setPhoneNumber("+213");
       setRegistrationStep("phoneNumber");
+      setOtpCounter(0);
     }
   };
   return (
     <Box sx={{ display: "flex", height: "100vh", backgroundColor: "#FFFFFF" }}>
       <Box
         sx={{
-          width: "25%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1em",
+          padding: "2em",
           gap: "1em",
+          flex: 1,
         }}
       >
         <img src={logoImage} alt="Fixily" style={{ margin: "1em 0" }} />
@@ -652,8 +654,17 @@ const ArtisanSignUp = () => {
       </Box>
       <Box
         sx={{
-          width: "75%",
+          width: {
+            xl: "75%",
+            lg: "60%",
+            md: "50%",
+            sm: "0%",
+          },
           background: `url(${artisanImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPositionY: "20%",
+          backgroundPositionX: "center",
           position: "relative",
         }}
       >

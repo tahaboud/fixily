@@ -9,6 +9,7 @@ const initialState: AuthState = {
   data: null,
   details: null,
   errors: null,
+  userDataFetchedFromToken: false,
 };
 
 export default (
@@ -18,6 +19,9 @@ export default (
   switch (type) {
     case ActionEnums.AUTH_IS_LOADING:
       return { ...state, userIsLoading: true };
+
+    case ActionEnums.CLEAN_AUTH_STATE:
+      return { ...state, userIsLoading: false, details: null };
 
     case ActionEnums.SIGN_IN_SUCCESS:
     case ActionEnums.SIGN_UP_SUCCESS:
@@ -33,6 +37,15 @@ export default (
       };
 
     case ActionEnums.GET_USER_SUCCESS:
+      return {
+        ...state,
+        token: localStorage.getItem("token"),
+        isAuthenticated: true,
+        data: payload,
+        errors: null,
+        userIsLoading: false,
+        userDataFetchedFromToken: true,
+      };
     case ActionEnums.UPDATE_USER_SUCCESS:
       return {
         ...state,
@@ -40,6 +53,7 @@ export default (
         isAuthenticated: true,
         data: payload,
         errors: null,
+        details: { details: "user updated successfully" },
         userIsLoading: false,
       };
     case ActionEnums.GET_SOCIAL_STATE_SUCCESS:
@@ -56,6 +70,7 @@ export default (
     case ActionEnums.RESET_PASSWORD_SUCCESS:
     case ActionEnums.RESET_PASSWORD_OTP_SUCCESS:
     case ActionEnums.SOCIAL_LOGIN_FAIL:
+    case ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_SUCCESS:
       return {
         ...state,
         errors: null,
@@ -71,6 +86,7 @@ export default (
     case ActionEnums.REQUEST_RESET_PASSWORD_FAIL:
     case ActionEnums.GET_SOCIAL_STATE_FAIL:
     case ActionEnums.SEND_OTP_FAIL:
+    case ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_FAIL:
     case ActionEnums.VERIFY_OTP_FAIL:
       return {
         ...state,
@@ -82,7 +98,7 @@ export default (
     case ActionEnums.SIGNOUT_FAIL:
     case ActionEnums.GET_USER_FAIL:
       localStorage.removeItem("token");
-      return initialState;
+      return { ...initialState, userDataFetchedFromToken: true };
 
     default:
       return state;

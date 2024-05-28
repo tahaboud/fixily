@@ -41,12 +41,18 @@ const ClientSignUp = () => {
       <Box sx={{ display: "flex", height: "100vh" }}>
         <Box
           sx={{
-            width: "75%",
             height: "100%",
+            width: {
+              xl: "75%",
+              lg: "60%",
+              md: "50%",
+              sm: "0%",
+            },
             backgroundImage: `url(${clientImage})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             backgroundPositionY: "50%",
+            backgroundPositionX: "center",
             position: "relative",
           }}
         >
@@ -63,14 +69,14 @@ const ClientSignUp = () => {
         </Box>
         <Box
           sx={{
-            width: "25%",
             height: "100%",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             gap: "1em",
-            padding: "1em",
+            padding: "2em",
+            flex: 1,
           }}
         >
           <img src={logoImage} alt="Fixily" style={{ margin: "1em 0" }} />

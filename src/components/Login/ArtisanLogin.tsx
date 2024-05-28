@@ -60,13 +60,13 @@ const ArtisanLogin = () => {
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box
         sx={{
-          width: "25%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "1em",
+          padding: "2em",
           gap: "1em",
+          flex: 1,
         }}
       >
         <img src={logoImage} alt="Fixily" style={{ margin: "1em 0" }} />
@@ -192,8 +192,17 @@ const ArtisanLogin = () => {
       </Box>
       <Box
         sx={{
-          width: "75%",
+          width: {
+            xl: "75%",
+            lg: "60%",
+            md: "50%",
+            sm: "0%",
+          },
           background: `url(${artisanImage})`,
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "cover",
+          backgroundPositionY: "20%",
+          backgroundPositionX: "center",
           position: "relative",
         }}
       >
