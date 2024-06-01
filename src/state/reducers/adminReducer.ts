@@ -25,6 +25,20 @@ export default (
         errors: null,
       };
 
+    case ActionEnums.ADMIN_UPDATE_CATEGORY_SUCCESS:
+      return {
+        ...state,
+        adminIsLoading: false,
+        errors: null,
+      };
+
+    case ActionEnums.ADMIN_UPDATE_CATEGORY_FAIL:
+      return {
+        ...state,
+        adminIsLoading: false,
+        errors: payload,
+      };
+
     default:
       return state;
   }

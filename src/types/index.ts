@@ -26,7 +26,7 @@ export interface User {
   points: number;
   is_email_verified: boolean;
   is_phone_verified: boolean;
-  is_id_verified: boolean;
+  id_status: "verified" | "stale" | "rejected" | "review_asked";
   auth_provider: "facebook" | "email" | "google";
   is_admin: boolean;
   is_superuser: boolean;
@@ -42,6 +42,7 @@ export interface User {
   bio: string | null;
   is_on_holiday_mode: boolean;
   previous_work_photos: Array<PreviousWorkPhoto>;
+  created_at: string;
 }
 
 export interface UserResponse {

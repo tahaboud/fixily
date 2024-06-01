@@ -52,12 +52,56 @@ export interface UpdateUserActionParams {
 export interface AdminUpdateUserActionParams {
   token: string;
   userId: number;
-  points?: string;
+  points?: number;
   isIDVerified?: boolean;
   isAdmin?: boolean;
   isActive?: boolean;
 }
+
 export interface AdminDeleteUserActionParams {
   token: string;
   userId: number;
+}
+
+export interface AdminUpdateCategoryActionParams {
+  token: string;
+  categoryId: string;
+  nameAr: string;
+  nameEn: string;
+  image?: File;
+}
+
+export interface AdminDeleteCategoryActionParams {
+  token: string;
+  categoryId: string;
+}
+
+export interface AdminCreateCategoryActionParams {
+  token: string;
+  nameAr: string;
+  nameEn: string;
+  image: File;
+}
+
+export interface AdminUpdateSubCategoryActionParams {
+  token: string;
+  subCategoryId: string;
+  categoryId: string;
+  nameAr: string;
+  nameEn: string;
+  points: number;
+}
+
+export interface AdminDeleteSubCategoryActionParams {
+  token: string;
+  subCategoryId: string;
+  categoryId: string;
+}
+
+export interface AdminCreateSubCategoryActionParams {
+  token: string;
+  nameAr: string;
+  nameEn: string;
+  categoryId: string;
+  points: number;
 }

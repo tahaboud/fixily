@@ -421,7 +421,7 @@ export const updateUser =
     }
     if (subCategories) {
       subCategories.map((subCategory) =>
-        formData.append("categories", subCategory)
+        formData.append("sub_categories", subCategory)
       );
     }
     if (previousWorkPhotos) {

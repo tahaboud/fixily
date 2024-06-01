@@ -95,6 +95,36 @@ interface DeletePreviousWorkPhotoAction {
   payload: null;
 }
 
+interface AdminUpdateCategoryAction {
+  type: ActionEnums.ADMIN_UPDATE_CATEGORY_SUCCESS;
+  payload: null;
+}
+
+interface AdminCreateCategoryAction {
+  type: ActionEnums.ADMIN_CREATE_CATEGORY_SUCCESS;
+  payload: null;
+}
+
+interface AdminUpdateSubCategoryAction {
+  type: ActionEnums.ADMIN_UPDATE_SUB_CATEGORY_SUCCESS;
+  payload: null;
+}
+
+interface AdminCreateSubCategoryAction {
+  type: ActionEnums.ADMIN_CREATE_SUB_CATEGORY_SUCCESS;
+  payload: null;
+}
+
+interface AdminDeleteSubCategoryAction {
+  type: ActionEnums.ADMIN_DELETE_SUB_CATEGORY_SUCCESS;
+  payload: null;
+}
+
+interface AdminDeleteCategoryAction {
+  type: ActionEnums.ADMIN_DELETE_CATEGORY_SUCCESS;
+  payload: null;
+}
+
 interface IsLoadingAction {
   type:
     | ActionEnums.AUTH_IS_LOADING
@@ -124,6 +154,12 @@ interface ErrorAction {
     | ActionEnums.GET_WILAYAS_FAIL
     | ActionEnums.GET_COMMUNES_FAIL
     | ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_FAIL
+    | ActionEnums.ADMIN_UPDATE_CATEGORY_FAIL
+    | ActionEnums.ADMIN_CREATE_CATEGORY_FAIL
+    | ActionEnums.ADMIN_UPDATE_SUB_CATEGORY_FAIL
+    | ActionEnums.ADMIN_CREATE_SUB_CATEGORY_FAIL
+    | ActionEnums.ADMIN_DELETE_CATEGORY_FAIL
+    | ActionEnums.ADMIN_DELETE_SUB_CATEGORY_FAIL
     | ActionEnums.RESET_PASSWORD_OTP_FAIL;
   payload: {
     error?: string;
@@ -147,6 +183,12 @@ export type ActionType =
   | GetWilayasAction
   | GetCommunesAction
   | DeletePreviousWorkPhotoAction
+  | AdminUpdateCategoryAction
+  | AdminCreateCategoryAction
+  | AdminUpdateSubCategoryAction
+  | AdminCreateSubCategoryAction
+  | AdminDeleteCategoryAction
+  | AdminDeleteSubCategoryAction
   | IsLoadingAction
   | ErrorAction
   | CleanStateAction;
