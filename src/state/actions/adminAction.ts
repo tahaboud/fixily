@@ -3,6 +3,7 @@ import { AppDispatch } from "../../store";
 import { ActionEnums } from "../types/actionEnums";
 import { getCategories, getSubCategories } from "./servicesAction";
 import {
+  AdminCreateAdminActionParams,
   AdminCreateCategoryActionParams,
   AdminCreateSubCategoryActionParams,
   AdminDeleteCategoryActionParams,
@@ -61,13 +62,26 @@ export const adminUpdateUser =
         Authorization: `Token ${token}`,
       },
     };
-
-    const body = JSON.stringify({
-      is_active: isActive,
-      is_admin: isAdmin,
-      id_status: isIDVerified ? "verified" : "rejected",
-      points: points,
-    });
+    interface JsonBody {
+      is_active?: boolean;
+      is_admin?: boolean;
+      id_status?: "verified" | "rejected";
+      points?: number;
+    }
+    const jsonBody: JsonBody = {};
+    if (isActive !== undefined) {
+      jsonBody.is_active = isActive;
+    }
+    if (isAdmin !== undefined) {
+      jsonBody.is_admin = isAdmin;
+    }
+    if (isIDVerified !== undefined) {
+      jsonBody.id_status = isIDVerified ? "verified" : "rejected";
+    }
+    if (points !== undefined) {
+      jsonBody.points = points;
+    }
+    const body = JSON.stringify(jsonBody);
 
     axios
       .patch(
@@ -357,6 +371,51 @@ export const adminCreateSubCategory =
       .catch((err) => {
         dispatch({
           type: ActionEnums.ADMIN_CREATE_SUB_CATEGORY_FAIL,
+          payload: err.response.data,
+        });
+      });
+  };
+
+export const adminCreateAdmin =
+  ({
+    token,
+    firstName,
+    lastName,
+    password,
+    email,
+  }: AdminCreateAdminActionParams) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.ADMIN_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    const data = JSON.stringify({
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      password,
+    });
+
+    axios
+      .post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/admin/create-admin/`,
+        data,
+        config
+      )
+      .then(() => {
+        dispatch({
+          type: ActionEnums.ADMIN_CREATE_ADMIN_SUCCESS,
+        });
+        dispatch(adminGetUsers({ token }));
+      })
+      .catch((err) => {
+        dispatch({
+          type: ActionEnums.ADMIN_CREATE_ADMIN_FAIL,
           payload: err.response.data,
         });
       });

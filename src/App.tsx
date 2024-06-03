@@ -11,6 +11,7 @@ import "./App.css";
 import { SnackbarContext } from "./components/common/SnackbarContext";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import Admin from "./pages/Admin";
+import ArtisanAvailability from "./pages/ArtisanAvailability";
 import ArtisanForgotPassword from "./pages/ArtisanForgotPassword";
 import ArtisanLogin from "./pages/ArtisanLogin";
 import ArtisanSignUp from "./pages/ArtisanSignUp";
@@ -92,6 +93,7 @@ function App() {
                 <Route element={<SubCategories />} path="/sub-categories" />
                 <Route element={<Wilayas />} path="/wilayas" />
                 <Route element={<Photo />} path="/photo" />
+                <Route element={<ArtisanAvailability />} path="/availability" />
               </Route>
             </Route>
             <Route element={<Home />} path="/" />

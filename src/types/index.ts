@@ -1,3 +1,5 @@
+import { Availability } from "../state/actions/types";
+
 export interface Wilaya {
   pk: string;
   name_ar: string;
@@ -33,8 +35,8 @@ export interface User {
   commercial_register_number: string | null;
   front_id_image: string | null;
   back_id_image: string | null;
-  categories: Array<string> | null;
-  sub_categories: Array<string> | null;
+  categories: Array<Category> | null;
+  sub_categories: Array<SubCategory> | null;
   wilaya: Wilaya | null;
   commune: Commune | null;
   picture: string | null;
@@ -43,6 +45,7 @@ export interface User {
   is_on_holiday_mode: boolean;
   previous_work_photos: Array<PreviousWorkPhoto>;
   created_at: string;
+  availability: Array<Availability>;
 }
 
 export interface UserResponse {
@@ -57,6 +60,7 @@ export interface SocialUserResponse {
 }
 
 export interface Category {
+  id: string;
   pk: string;
   name_ar: string;
   name_en: string;
@@ -64,6 +68,7 @@ export interface Category {
 }
 
 export interface SubCategory {
+  id: string;
   pk: string;
   name_ar: string;
   name_en: string;

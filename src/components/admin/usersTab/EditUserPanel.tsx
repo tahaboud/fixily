@@ -30,6 +30,7 @@ const EditUserPanel = ({
           isAdmin: !selectedUser.is_admin,
         })
       );
+      setSelectedUser(null);
     }
   };
   const handleToggleActivateUser = () => {
@@ -154,8 +155,8 @@ const EditUserPanel = ({
           onClick={handleToggleAdminPrivileges}
         >
           {selectedUser.is_admin
-            ? t("Grant Admin Previleges")
-            : t("Remove Admin Previleges")}
+            ? t("Remove Admin Previleges")
+            : t("Grant Admin Previleges")}
         </Button>
       )}
       <Button

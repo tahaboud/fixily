@@ -105,6 +105,11 @@ interface AdminCreateCategoryAction {
   payload: null;
 }
 
+interface AdminCreateAdminAction {
+  type: ActionEnums.ADMIN_CREATE_ADMIN_SUCCESS;
+  payload: null;
+}
+
 interface AdminUpdateSubCategoryAction {
   type: ActionEnums.ADMIN_UPDATE_SUB_CATEGORY_SUCCESS;
   payload: null;
@@ -160,6 +165,7 @@ interface ErrorAction {
     | ActionEnums.ADMIN_CREATE_SUB_CATEGORY_FAIL
     | ActionEnums.ADMIN_DELETE_CATEGORY_FAIL
     | ActionEnums.ADMIN_DELETE_SUB_CATEGORY_FAIL
+    | ActionEnums.ADMIN_CREATE_ADMIN_FAIL
     | ActionEnums.RESET_PASSWORD_OTP_FAIL;
   payload: {
     error?: string;
@@ -189,6 +195,7 @@ export type ActionType =
   | AdminCreateSubCategoryAction
   | AdminDeleteCategoryAction
   | AdminDeleteSubCategoryAction
+  | AdminCreateAdminAction
   | IsLoadingAction
   | ErrorAction
   | CleanStateAction;

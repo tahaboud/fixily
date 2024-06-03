@@ -35,6 +35,20 @@ export interface ConfirmEmailActionParams {
   code: string;
 }
 
+export interface Availability {
+  day:
+    | "saturday"
+    | "sunday"
+    | "monday"
+    | "tuesday"
+    | "wednesday"
+    | "thursday"
+    | "friday";
+  from_time: string | null;
+  to_time: string | null;
+  is_holiday: boolean;
+}
+
 export interface UpdateUserActionParams {
   token: string;
   firstName?: string;
@@ -48,6 +62,9 @@ export interface UpdateUserActionParams {
   picture?: File | null;
   previousWorkPhotos?: FileList;
   bio?: string;
+  setUploadProgress?: React.Dispatch<React.SetStateAction<number>>;
+  setUploading?: React.Dispatch<React.SetStateAction<boolean>>;
+  availability?: Array<Availability>;
 }
 export interface AdminUpdateUserActionParams {
   token: string;
@@ -104,4 +121,12 @@ export interface AdminCreateSubCategoryActionParams {
   nameEn: string;
   categoryId: string;
   points: number;
+}
+
+export interface AdminCreateAdminActionParams {
+  token: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
 }

@@ -383,6 +383,9 @@ export const updateUser =
     picture,
     previousWorkPhotos,
     bio,
+    setUploadProgress,
+    setUploading,
+    availability,
   }: UpdateUserActionParams) =>
   (dispatch: AppDispatch) => {
     dispatch({ type: ActionEnums.AUTH_IS_LOADING });
@@ -393,6 +396,24 @@ export const updateUser =
         Authorization: `Token ${token}`,
       },
     };
+
+    if (setUploadProgress && picture) {
+      config.onUploadProgress = (progress) => {
+        const uploadProgress = (progress.loaded * 100) / picture.size;
+        setUploadProgress(uploadProgress > 100 ? 100 : uploadProgress);
+      };
+    }
+
+    if (setUploadProgress && previousWorkPhotos) {
+      config.onUploadProgress = (progress) => {
+        let totalSize = 0;
+        Array.from(previousWorkPhotos).map(
+          (photo) => (totalSize += photo.size)
+        );
+        const uploadProgress = (progress.loaded * 100) / totalSize;
+        setUploadProgress(uploadProgress > 100 ? 100 : uploadProgress);
+      };
+    }
 
     const formData = new FormData();
     if (firstName) {
@@ -432,6 +453,23 @@ export const updateUser =
     if (bio) {
       formData.append("bio", bio);
     }
+    if (availability) {
+      availability.map((dayAvailability, index) => {
+        formData.append(`availability[${index}]day`, dayAvailability.day);
+        formData.append(
+          `availability[${index}]is_holiday`,
+          dayAvailability.is_holiday ? "true" : "false"
+        );
+        formData.append(
+          `availability[${index}]from_time`,
+          dayAvailability.from_time ? dayAvailability.from_time : ""
+        );
+        formData.append(
+          `availability[${index}]to_time`,
+          dayAvailability.to_time ? dayAvailability.to_time : ""
+        );
+      });
+    }
 
     axios
       .patch(
@@ -440,9 +478,17 @@ export const updateUser =
         config
       )
       .then((res) => {
+        if (setUploading) {
+          setUploading(false);
+        }
         dispatch({ type: ActionEnums.UPDATE_USER_SUCCESS, payload: res.data });
       })
-      .catch(() => dispatch({ type: ActionEnums.UPDATE_USER_FAIL }));
+      .catch(() => {
+        if (setUploading) {
+          setUploading(false);
+        }
+        dispatch({ type: ActionEnums.UPDATE_USER_FAIL });
+      });
   };
 
 export const deletePreviousWorkPhoto =

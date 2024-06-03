@@ -196,6 +196,7 @@ const UsersTable = ({
             <Button
               startIcon={<AddIcon />}
               sx={{ textTransform: "none", color: "#2C3E50" }}
+              onClick={() => setScreenToShow("creating")}
             >
               {t("Add new admin")}
             </Button>

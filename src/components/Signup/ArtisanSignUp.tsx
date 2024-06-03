@@ -62,7 +62,7 @@ const ArtisanSignUp = () => {
   useEffect(() => {
     if (isAuthenticated) {
       if (registrationStep === "userData") {
-        navigate("/complete-registration");
+        navigate("/photo");
       } else {
         navigate("/");
       }

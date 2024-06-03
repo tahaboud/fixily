@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useAppSelector } from "../../hooks";
 import { User } from "../../types";
 import Cards from "./usersTab/Cards";
+import CreateAdminComponent from "./usersTab/CreateAdminComponent";
 import EditUserComponent from "./usersTab/EditUserComponent";
 import UsersTable from "./usersTab/UsersTable";
 
@@ -40,6 +41,8 @@ const Users = () => {
             setNumOfJoinedToday={setNumOfJoinedToday}
           />
         </>
+      ) : screenToShow === "creating" ? (
+        <CreateAdminComponent setScreenToShow={setScreenToShow} />
       ) : (
         selectedUser &&
         currentUser && (

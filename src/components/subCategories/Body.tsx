@@ -36,16 +36,17 @@ const Body = () => {
   >([]);
   useEffect(() => {
     if (token && data && data.categories) {
-      dispatch(getSubCategories({ token, categoryIds: data.categories }));
+      const categoryIds: Array<string> = [];
+      data.categories.map((cat) => categoryIds.push(cat.id));
+      dispatch(getSubCategories({ token, categoryIds }));
       dispatch(getCategories({ token }));
     }
   }, [token, dispatch, data]);
   useEffect(() => {
     if (categories && data && data.categories) {
-      const extractedNames: string[] = data.categories.map((category) => {
-        const categoryName = categories.find((cat) => cat.pk === category);
-        return categoryName ? categoryName.name_en : "";
-      });
+      const extractedNames: string[] = data.categories.map(
+        (category) => category.name_en
+      );
 
       const finalString: string = extractedNames.reduce((acc, name, index) => {
         if (index === 0) {
@@ -65,16 +66,20 @@ const Body = () => {
     }
   };
   useEffect(() => {
-    if (details && details.details === "user updated successfully") {
-      navigate("/wilayas");
-    }
-  }, [details, navigate]);
-  useEffect(() => {
     dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
   }, [dispatch]);
   useEffect(() => {
+    if (details && details.details === "user updated successfully") {
+      dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
+      navigate("/wilayas");
+    }
+  }, [details, navigate, dispatch]);
+  useEffect(() => {
     if (data && data.sub_categories) {
-      setSelectedSubCategories(data.sub_categories);
+      const userSubCategories = data.sub_categories.map(
+        (sub_cat) => sub_cat.id
+      );
+      setSelectedSubCategories([...userSubCategories]);
     }
   }, [data]);
   return (

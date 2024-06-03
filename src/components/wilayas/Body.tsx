@@ -51,7 +51,7 @@ const Body = () => {
   };
   useEffect(() => {
     if (details && details.details === "user updated successfully") {
-      navigate("/photo");
+      navigate("/availability");
     }
   }, [details, navigate]);
   useEffect(() => {

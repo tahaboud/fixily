@@ -9,7 +9,7 @@ import {
   StepLabel,
   Stepper,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
@@ -27,13 +27,26 @@ const Body = () => {
   const { token, userIsLoading } = useAppSelector((state) => state.auth);
   const [image, setImage] = useState<File | null>(null);
   const [step, setStep] = useState<0 | 1 | 2>(0);
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const handleNext = () => {
     switch (step) {
       case 0:
-        if (token && image) {
-          dispatch(updateUser({ token, picture: image }));
+        if (token) {
+          if (image) {
+            setUploading(true);
+            dispatch(
+              updateUser({
+                token,
+                picture: image,
+                setUploading,
+                setUploadProgress,
+              })
+            );
+          } else {
+            setStep(1);
+          }
         }
-        setStep(1);
         break;
       case 1:
         if (token) {
@@ -61,16 +74,48 @@ const Body = () => {
   const getCurrentStep = () => {
     switch (step) {
       case 0:
-        return <Step1 image={image} setImage={setImage} />;
+        return (
+          <Step1
+            image={image}
+            setImage={setImage}
+            uploadProgress={uploadProgress}
+            uploading={uploading}
+          />
+        );
       case 1:
-        return <Step2 bio={bio} setBio={setBio} />;
+        return (
+          <Step2
+            bio={bio}
+            setBio={setBio}
+            uploading={uploading}
+            setUploading={setUploading}
+            uploadProgress={uploadProgress}
+            setUploadProgress={setUploadProgress}
+          />
+        );
       case 2:
         return <Step3 />;
 
       default:
-        return <Step1 image={image} setImage={setImage} />;
+        return (
+          <Step1
+            image={image}
+            setImage={setImage}
+            uploadProgress={uploadProgress}
+            uploading={uploading}
+          />
+        );
     }
   };
+  useEffect(() => {
+    if (uploading === false && uploadProgress === 100) {
+      if (step === 0) {
+        setUploadProgress(0);
+        setImage(null);
+        setStep(1);
+      }
+    }
+  }, [uploading, uploadProgress, setUploadProgress, setStep, step]);
   return (
     <Box sx={{ height: "80vh", backgroundColor: "#FFFFFF" }}>
       <Container maxWidth="lg" sx={{ height: "100%" }}>

@@ -26,6 +26,7 @@ export default (
       };
 
     case ActionEnums.ADMIN_UPDATE_CATEGORY_SUCCESS:
+    case ActionEnums.ADMIN_CREATE_ADMIN_SUCCESS:
       return {
         ...state,
         adminIsLoading: false,
@@ -33,6 +34,7 @@ export default (
       };
 
     case ActionEnums.ADMIN_UPDATE_CATEGORY_FAIL:
+    case ActionEnums.ADMIN_CREATE_ADMIN_FAIL:
       return {
         ...state,
         adminIsLoading: false,

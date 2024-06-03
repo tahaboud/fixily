@@ -50,6 +50,8 @@ const Settings = () => {
             })
           );
         }
+        setSelectedCategory(null);
+        setCreatingCategory(false);
       } else if (creatingCategory && picture) {
         dispatch(
           adminCreateCategory({
@@ -59,11 +61,11 @@ const Settings = () => {
             image: picture,
           })
         );
+        setSelectedCategory(null);
+        setCreatingCategory(false);
+      } else {
+        setCreatingCategory(true);
       }
-      setSelectedCategory(null);
-      setCreatingCategory(false);
-    } else {
-      setCreatingCategory(true);
     }
   };
   return (

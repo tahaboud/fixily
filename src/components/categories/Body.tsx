@@ -65,17 +65,20 @@ const Body = () => {
   };
   useEffect(() => {
     if (details && details.details === "user updated successfully") {
+      dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
       navigate("/sub-categories");
     }
-  }, [details, navigate]);
+  }, [details, navigate, dispatch]);
   useEffect(() => {
     if (data && data.categories) {
-      setSelectedCategories(data.categories);
+      const userCategories: Array<string> = [];
+      data.categories.map((cat) => userCategories.push(cat.id));
+      setSelectedCategories([...userCategories]);
     }
   }, [data]);
   return (
     <Box sx={{ backgroundColor: "#FFFFFF" }}>
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Box
           sx={{
             display: "flex",
@@ -94,7 +97,7 @@ const Body = () => {
             sx={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "1em",
+              gap: "2em",
               justifyContent: "center",
             }}
           >
@@ -102,7 +105,7 @@ const Body = () => {
               <Box
                 key={category.pk}
                 sx={{
-                  width: "9em",
+                  width: "7em",
                   height: "12em",
                   position: "relative",
                 }}
@@ -129,8 +132,8 @@ const Body = () => {
                 ) : null}
                 <Box
                   sx={{
-                    height: "9em",
-                    width: "9em",
+                    height: "7em",
+                    width: "7em",
                     borderRadius: "8px",
                     overflow: "hidden",
                     "&:hover": {
