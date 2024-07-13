@@ -152,7 +152,7 @@ const Body = () => {
   }, [data]);
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ backgroundColor: "#FFFFFF", height: "90vh" }}>
+      <Box sx={{ backgroundColor: "#FFFFFF" }}>
         <Container maxWidth="md">
           <Box
             sx={{
@@ -160,7 +160,7 @@ const Body = () => {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              height: "100%",
+              height: "100vh",
               gap: "2em",
             }}
           >

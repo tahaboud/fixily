@@ -161,7 +161,7 @@ const Step2 = ({
           >
             {images.map((image) => (
               <Box
-                key={image.pk}
+                key={image.id}
                 sx={{
                   width: "5em",
                   height: "5em",
@@ -169,7 +169,7 @@ const Step2 = ({
                   borderRadius: "8px",
                   backgroundColor: "#D9D9D9",
                   backgroundImage: `url(${
-                    import.meta.env.VITE_REACT_APP_API_URL
+                    import.meta.env.VITE_REACT_APP_IMAGE_URL
                   }${image.image})`,
                   backgroundSize: "contain",
                   backgroundRepeat: "no-repeat",
@@ -185,7 +185,7 @@ const Step2 = ({
                     padding: 0,
                     transform: "translate(50%,-50%)",
                   }}
-                  onClick={() => handleDeleteImage(image.pk)}
+                  onClick={() => handleDeleteImage(image.id)}
                   disabled={userIsLoading}
                 >
                   <CancelIcon sx={{ color: "#FC4848" }} />

@@ -45,11 +45,11 @@ const EditSubCategory = ({
         dispatch(
           adminUpdateSubCategory({
             token,
-            subCategoryId: selectedSubCategory.pk,
+            subCategoryId: selectedSubCategory.id,
             nameAr: subCategoryArTitle,
             nameEn: subCategoryEnTitle,
             points: subCategoryPoints,
-            categoryId: selectedCategory.pk,
+            categoryId: selectedCategory.id,
           })
         );
       } else if (creatingSubCategory) {
@@ -59,7 +59,7 @@ const EditSubCategory = ({
             nameAr: subCategoryArTitle,
             nameEn: subCategoryEnTitle,
             points: subCategoryPoints,
-            categoryId: selectedCategory.pk,
+            categoryId: selectedCategory.id,
           })
         );
       }
@@ -72,8 +72,8 @@ const EditSubCategory = ({
       dispatch(
         adminDeleteSubCategory({
           token,
-          subCategoryId: selectedSubCategory.pk,
-          categoryId: selectedCategory.pk,
+          subCategoryId: selectedSubCategory.id,
+          categoryId: selectedCategory.id,
         })
       );
       setSelectedSubCategory(null);

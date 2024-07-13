@@ -1,7 +1,7 @@
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import clientImage from "../../assets/client.png";
 import logoImage from "../../assets/logo.png";
@@ -13,6 +13,7 @@ import { ClientSignUpValidationErrors } from "../../validators/types";
 const ClientSignUp = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +22,11 @@ const ClientSignUp = () => {
   const [errors, setErrors] = useState<ClientSignUpValidationErrors | null>(
     null
   );
-  const { userIsLoading } = useAppSelector((state) => state.auth);
+
+  const { userIsLoading, errors: serverErrors } = useAppSelector(
+    (state) => state.auth
+  );
+
   const handleClientSignUp = () => {
     const { isValid, validationErrors } = validateClientSignUp({
       password,
@@ -36,6 +41,13 @@ const ClientSignUp = () => {
       setErrors(validationErrors);
     }
   };
+
+  useEffect(() => {
+    if (serverErrors && serverErrors.type === "validation_error") {
+      setErrors({ email: "email_already_in_use" });
+    }
+  }, [serverErrors]);
+
   return (
     <>
       <Box sx={{ display: "flex", height: "100vh" }}>

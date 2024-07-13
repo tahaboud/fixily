@@ -37,6 +37,12 @@ const Navbar = () => {
                     Admin panel
                   </Button>
                 )}
+                <Button
+                  variant="contained"
+                  onClick={() => navigate("/account")}
+                >
+                  My Account
+                </Button>
                 <Button variant="contained" onClick={onLogout}>
                   Logout
                 </Button>

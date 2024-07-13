@@ -29,7 +29,7 @@ const ArtisanLogin = () => {
   );
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/account");
     }
   }, [isAuthenticated, navigate]);
   const handlePhoneNumberLogin = () => {
@@ -45,14 +45,10 @@ const ArtisanLogin = () => {
     }
   };
   useEffect(() => {
-    if (
-      serverErrors &&
-      serverErrors.details &&
-      serverErrors.details[0] === "Incorrect credentials."
-    ) {
+    if (serverErrors && serverErrors.type === "validation_error") {
       setErrors({
-        phoneNumber: "Incorrect credentials.",
-        password: "Incorrect credentials.",
+        phoneNumber: "incorrect_credentials",
+        password: "incorrect_credentials",
       });
     }
   }, [serverErrors]);
@@ -81,7 +77,7 @@ const ArtisanLogin = () => {
         </Typography>
         <Box sx={{ width: "100%" }}>
           <Typography sx={{ color: "#2C3E50", fontWeight: "500" }}>
-            {t("Votre numero de telephone")}
+            {t("Votre numéro de téléphone")}
           </Typography>
           <InputMask
             mask="+213  999999999"
@@ -90,7 +86,7 @@ const ArtisanLogin = () => {
               setPhoneNumber(e.target.value);
               setErrors(null);
             }}
-            maskChar={" "}
+            maskPlaceholder={" "}
             children={
               <TextField
                 type="tel"

@@ -1,12 +1,18 @@
 import {
   Category,
+  ChatRoom,
   Commune,
+  ErrorResponse,
+  Job,
+  Notification,
+  PreviousJob,
   SocialUserResponse,
   SubCategory,
   User,
   UserResponse,
   Wilaya,
 } from "../../types";
+import { PaymentReceipt } from "../reducers/types";
 import { ActionEnums } from "./actionEnums";
 
 interface CleanStateAction {
@@ -31,7 +37,7 @@ interface GetUserAction {
 
 interface OTPAction {
   type: ActionEnums.SEND_OTP_SUCCESS | ActionEnums.VERIFY_OTP_SUCCESS;
-  payload: { details: Array<string> };
+  payload: { detail: Array<string> };
 }
 
 interface ConfirmEmailAction {
@@ -48,7 +54,7 @@ interface ResetPasswordAction {
 
 interface ResetPasswordVerifyOTPAction {
   type: ActionEnums.RESET_PASSWORD_OTP_SUCCESS;
-  payload: { details: Array<string> };
+  payload: { detail: Array<string> };
 }
 
 interface AdminGetAllUsersAction {
@@ -85,9 +91,62 @@ interface GetWilayasAction {
   payload: Array<Wilaya>;
 }
 
+interface ClientGetJobsAction {
+  type: ActionEnums.CLIENT_GET_JOBS_SUCCESS;
+  payload: Array<Job>;
+}
+
+interface ArtisanGetJobsAction {
+  type: ActionEnums.ARTISAN_GET_JOBS_SUCCESS;
+  payload: Array<Job>;
+}
+
+interface ArtisanGetPreviousJobsAction {
+  type: ActionEnums.ARTISAN_GET_PREVIOUS_JOBS_SUCCESS;
+  payload: Array<PreviousJob>;
+}
+
+interface GetNotificationsAction {
+  type: ActionEnums.GET_NOTIFICATIONS_SUCCESS;
+  payload: {
+    unseen_notifications_count: number;
+    notifications: Array<Notification>;
+  };
+}
+
 interface GetCommunesAction {
   type: ActionEnums.GET_COMMUNES_SUCCESS;
   payload: Array<Commune>;
+}
+
+interface GetChatRoomsAction {
+  type: ActionEnums.GET_CHAT_ROOMS_SUCCESS;
+  payload: Array<ChatRoom>;
+}
+
+interface AdminGetPaymentReceiptsAction {
+  type: ActionEnums.ADMIN_GET_PAYMENT_RECEIPT_SUCCESS;
+  payload: Array<PaymentReceipt>;
+}
+
+interface AdminUpdatePaymentReceiptsAction {
+  type: ActionEnums.ADMIN_UPDATE_PAYMENT_RECEIPT_SUCCESS;
+  payload: null;
+}
+
+interface CreateJobAction {
+  type: ActionEnums.CREATE_JOB_SUCCESS;
+  payload: Job;
+}
+
+interface AddJobImagesAction {
+  type: ActionEnums.ADD_JOB_IMAGES_SUCCESS;
+  payload: null;
+}
+
+interface DeleteJobAction {
+  type: ActionEnums.DELETE_JOB_SUCCESS;
+  payload: null;
 }
 
 interface DeletePreviousWorkPhotoAction {
@@ -130,11 +189,17 @@ interface AdminDeleteCategoryAction {
   payload: null;
 }
 
+interface MarkNotifcationsAsReadAction {
+  type: ActionEnums.MARK_NOTIFICATIONS_AS_READ_SUCCESS;
+  payload: null;
+}
+
 interface IsLoadingAction {
   type:
     | ActionEnums.AUTH_IS_LOADING
     | ActionEnums.ADMIN_IS_LOADING
-    | ActionEnums.SERVICES_IS_LOADING;
+    | ActionEnums.SERVICES_IS_LOADING
+    | ActionEnums.CHAT_IS_LOADING;
   payload: null;
 }
 
@@ -158,6 +223,9 @@ interface ErrorAction {
     | ActionEnums.GET_CATEGORIES_FAIL
     | ActionEnums.GET_WILAYAS_FAIL
     | ActionEnums.GET_COMMUNES_FAIL
+    | ActionEnums.CLIENT_GET_JOBS_FAIL
+    | ActionEnums.ARTISAN_GET_JOBS_FAIL
+    | ActionEnums.ARTISAN_GET_PREVIOUS_JOBS_FAIL
     | ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_FAIL
     | ActionEnums.ADMIN_UPDATE_CATEGORY_FAIL
     | ActionEnums.ADMIN_CREATE_CATEGORY_FAIL
@@ -166,11 +234,17 @@ interface ErrorAction {
     | ActionEnums.ADMIN_DELETE_CATEGORY_FAIL
     | ActionEnums.ADMIN_DELETE_SUB_CATEGORY_FAIL
     | ActionEnums.ADMIN_CREATE_ADMIN_FAIL
+    | ActionEnums.GET_CHAT_ROOMS_FAIL
+    | ActionEnums.MARK_NOTIFICATIONS_AS_READ_FAIL
+    | ActionEnums.GET_NOTIFICATIONS_FAIL
+    | ActionEnums.SWITCH_TO_CLIENT
+    | ActionEnums.CREATE_JOB_FAIL
+    | ActionEnums.DELETE_JOB_FAIL
+    | ActionEnums.ADD_JOB_IMAGES_FAIL
+    | ActionEnums.ADMIN_GET_PAYMENT_RECEIPT_FAIL
+    | ActionEnums.ADMIN_UPDATE_PAYMENT_RECEIPT_FAIL
     | ActionEnums.RESET_PASSWORD_OTP_FAIL;
-  payload: {
-    error?: string;
-    details?: Array<string>;
-  };
+  payload: { type: string; errors: Array<ErrorResponse> } | null;
 }
 
 export type ActionType =
@@ -188,6 +262,9 @@ export type ActionType =
   | GetSubCategoriesAction
   | GetWilayasAction
   | GetCommunesAction
+  | ClientGetJobsAction
+  | ArtisanGetJobsAction
+  | ArtisanGetPreviousJobsAction
   | DeletePreviousWorkPhotoAction
   | AdminUpdateCategoryAction
   | AdminCreateCategoryAction
@@ -196,6 +273,14 @@ export type ActionType =
   | AdminDeleteCategoryAction
   | AdminDeleteSubCategoryAction
   | AdminCreateAdminAction
+  | GetChatRoomsAction
+  | GetNotificationsAction
+  | MarkNotifcationsAsReadAction
+  | CreateJobAction
+  | AddJobImagesAction
+  | DeleteJobAction
+  | AdminGetPaymentReceiptsAction
+  | AdminUpdatePaymentReceiptsAction
   | IsLoadingAction
   | ErrorAction
   | CleanStateAction;

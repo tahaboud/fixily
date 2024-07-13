@@ -65,10 +65,12 @@ export interface UpdateUserActionParams {
   setUploadProgress?: React.Dispatch<React.SetStateAction<number>>;
   setUploading?: React.Dispatch<React.SetStateAction<boolean>>;
   availability?: Array<Availability>;
+  isOnHolidayMode?: boolean;
+  email?: string;
 }
 export interface AdminUpdateUserActionParams {
   token: string;
-  userId: number;
+  userId: string;
   points?: number;
   isIDVerified?: boolean;
   isAdmin?: boolean;
@@ -129,4 +131,13 @@ export interface AdminCreateAdminActionParams {
   lastName: string;
   email: string;
   password: string;
+}
+
+export interface CreateJobParams {
+  token: string;
+  description: string;
+  wilaya: string;
+  commune: string;
+  subCategory: string;
+  images: Array<File> | null;
 }

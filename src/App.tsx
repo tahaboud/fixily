@@ -11,31 +11,32 @@ import "./App.css";
 import { SnackbarContext } from "./components/common/SnackbarContext";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import Admin from "./pages/Admin";
+import ArtisanAccount from "./pages/ArtisanAccount";
 import ArtisanAvailability from "./pages/ArtisanAvailability";
 import ArtisanForgotPassword from "./pages/ArtisanForgotPassword";
 import ArtisanLogin from "./pages/ArtisanLogin";
 import ArtisanSignUp from "./pages/ArtisanSignUp";
 import Categories from "./pages/Categories";
+import ClientAccount from "./pages/ClientAccount";
 import ClientForgotPassword from "./pages/ClientForgotPassword";
 import ClientLogin from "./pages/ClientLogin";
 import ClientSignUp from "./pages/ClientSignUp";
-import Followup from "./pages/Followup";
-import Home from "./pages/Home";
+import CreateNewJob from "./pages/CreateNewJob";
+import LandingPage from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Photo from "./pages/Photo";
-import Signup from "./pages/Signup";
 import SubCategories from "./pages/SubCategories";
 import Wilayas from "./pages/Wilayas";
 import { getUser } from "./state/actions/authActions";
+import "./style.css";
 import AdminRoutes from "./utils/AdminRoutes";
 import ArtisanRoutes from "./utils/ArtisanRoutes";
 import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {
   const dispatch = useAppDispatch();
-  const { isAuthenticated, data, userDataFetchedFromToken } = useAppSelector(
-    (state) => state.auth
-  );
+  const { isAuthenticated, data, userDataFetchedFromToken, isArtisan } =
+    useAppSelector((state) => state.auth);
   const [snack, setSnack] = useState<{
     message: string;
     color: "success" | "info" | "warning" | "error";
@@ -48,7 +49,8 @@ function App() {
   });
   const theme = createTheme({
     typography: {
-      fontFamily: "Lato, sans-serif",
+      fontFamily: "Lato",
+      fontWeightRegular: 500,
     },
   });
   useEffect(() => {
@@ -95,13 +97,18 @@ function App() {
                 <Route element={<Photo />} path="/photo" />
                 <Route element={<ArtisanAvailability />} path="/availability" />
               </Route>
+              <Route
+                element={isArtisan ? <ArtisanAccount /> : <ClientAccount />}
+                path="/account"
+              />
             </Route>
-            <Route element={<Home />} path="/" />
+            <Route element={<LandingPage />} path="/" />
             <Route element={<Login />} path="/login" />
             <Route element={<ClientLogin />} path="/login/client" />
             <Route element={<ArtisanLogin />} path="/login/artisan" />
             <Route element={<ArtisanSignUp />} path="/register/artisan" />
             <Route element={<ClientSignUp />} path="/register/client" />
+            <Route element={<CreateNewJob />} path="/new-job" />
             <Route
               element={<ClientForgotPassword />}
               path="/forget-password/client"
@@ -110,8 +117,6 @@ function App() {
               element={<ArtisanForgotPassword />}
               path="/forget-password/artisan"
             />
-            <Route element={<Signup />} path="/signup" />
-            <Route element={<Followup />} path="/followup" />
           </Routes>
         </Router>
       </SnackbarContext.Provider>

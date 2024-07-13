@@ -5,11 +5,13 @@ import { AuthState } from "./types";
 const initialState: AuthState = {
   userIsLoading: false,
   isAuthenticated: false,
+  isArtisan: false,
   token: null,
   data: null,
-  details: null,
+  detail: null,
   errors: null,
   userDataFetchedFromToken: false,
+  notifications: null,
 };
 
 export default (
@@ -21,7 +23,9 @@ export default (
       return { ...state, userIsLoading: true };
 
     case ActionEnums.CLEAN_AUTH_STATE:
-      return { ...state, userIsLoading: false, details: null };
+      return { ...state, userIsLoading: false, detail: null };
+    case ActionEnums.SWITCH_TO_CLIENT:
+      return { ...state, userIsLoading: false, isArtisan: !state.isArtisan };
 
     case ActionEnums.SIGN_IN_SUCCESS:
     case ActionEnums.SIGN_UP_SUCCESS:
@@ -31,8 +35,10 @@ export default (
         ...state,
         userIsLoading: false,
         isAuthenticated: true,
+        userDataFetchedFromToken: true,
         token: payload.token,
         data: payload.user,
+        isArtisan: payload.user.is_artisan,
         errors: null,
       };
 
@@ -45,6 +51,7 @@ export default (
         errors: null,
         userIsLoading: false,
         userDataFetchedFromToken: true,
+        isArtisan: payload.is_artisan,
       };
     case ActionEnums.UPDATE_USER_SUCCESS:
       return {
@@ -53,28 +60,34 @@ export default (
         isAuthenticated: true,
         data: payload,
         errors: null,
-        details: { details: "user updated successfully" },
+        detail: { detail: "user updated successfully" },
         userIsLoading: false,
       };
     case ActionEnums.GET_SOCIAL_STATE_SUCCESS:
       return {
         ...state,
-        details: payload,
+        detail: payload,
         errors: null,
         userIsLoading: false,
       };
+    case ActionEnums.GET_NOTIFICATIONS_SUCCESS:
+      return {
+        ...state,
+        userIsLoading: false,
+        notifications: payload,
+      };
     case ActionEnums.SEND_OTP_SUCCESS:
     case ActionEnums.VERIFY_OTP_SUCCESS:
+    case ActionEnums.MARK_NOTIFICATIONS_AS_READ_SUCCESS:
     case ActionEnums.CONFIRM_EMAIL_SUCCESS:
     case ActionEnums.REQUEST_RESET_PASSWORD_SUCCESS:
     case ActionEnums.RESET_PASSWORD_SUCCESS:
     case ActionEnums.RESET_PASSWORD_OTP_SUCCESS:
-    case ActionEnums.SOCIAL_LOGIN_FAIL:
     case ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_SUCCESS:
       return {
         ...state,
         errors: null,
-        details: payload,
+        detail: payload,
         userIsLoading: false,
       };
 
@@ -88,10 +101,13 @@ export default (
     case ActionEnums.SEND_OTP_FAIL:
     case ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_FAIL:
     case ActionEnums.VERIFY_OTP_FAIL:
+    case ActionEnums.MARK_NOTIFICATIONS_AS_READ_FAIL:
+    case ActionEnums.GET_NOTIFICATIONS_FAIL:
+    case ActionEnums.SOCIAL_LOGIN_FAIL:
       return {
         ...state,
         errors: payload,
-        details: null,
+        detail: null,
         userIsLoading: false,
       };
     case ActionEnums.SIGNOUT_SUCCESS:

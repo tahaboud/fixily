@@ -108,8 +108,11 @@ export const registerClient =
       .then((res) => {
         dispatch({ type: ActionEnums.SIGN_UP_SUCCESS, payload: res.data });
       })
-      .catch(() => {
-        dispatch({ type: ActionEnums.SIGN_UP_FAIL });
+      .catch((err) => {
+        dispatch({
+          type: ActionEnums.SIGN_UP_FAIL,
+          payload: err.response.data,
+        });
       });
   };
 
@@ -386,6 +389,8 @@ export const updateUser =
     setUploadProgress,
     setUploading,
     availability,
+    isOnHolidayMode,
+    email,
   }: UpdateUserActionParams) =>
   (dispatch: AppDispatch) => {
     dispatch({ type: ActionEnums.AUTH_IS_LOADING });
@@ -437,6 +442,9 @@ export const updateUser =
     if (picture !== undefined) {
       formData.append("picture", picture || "");
     }
+    if (email !== undefined) {
+      formData.append("email", email);
+    }
     if (categories) {
       categories.map((category) => formData.append("categories", category));
     }
@@ -470,6 +478,9 @@ export const updateUser =
         );
       });
     }
+    if (isOnHolidayMode !== undefined) {
+      formData.append("is_on_holiday_mode", isOnHolidayMode ? "true" : "false");
+    }
 
     axios
       .patch(
@@ -483,11 +494,14 @@ export const updateUser =
         }
         dispatch({ type: ActionEnums.UPDATE_USER_SUCCESS, payload: res.data });
       })
-      .catch(() => {
+      .catch((err) => {
         if (setUploading) {
           setUploading(false);
         }
-        dispatch({ type: ActionEnums.UPDATE_USER_FAIL });
+        dispatch({
+          type: ActionEnums.UPDATE_USER_FAIL,
+          payload: err.response.data,
+        });
       });
   };
 
@@ -516,5 +530,60 @@ export const deletePreviousWorkPhoto =
       })
       .catch(() =>
         dispatch({ type: ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_FAIL })
+      );
+  };
+
+export const getNotifications =
+  ({ token }: { token: string }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.AUTH_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    axios
+      .get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/notifications/`,
+        config
+      )
+      .then((res) => {
+        dispatch({
+          type: ActionEnums.GET_NOTIFICATIONS_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch(() => dispatch({ type: ActionEnums.GET_NOTIFICATIONS_FAIL }));
+  };
+
+export const markNotificationsAsRead =
+  ({ token }: { token: string }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.AUTH_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    axios
+      .post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/notifications/`,
+        null,
+        config
+      )
+      .then(() => {
+        dispatch({
+          type: ActionEnums.MARK_NOTIFICATIONS_AS_READ_SUCCESS,
+        });
+        dispatch(getNotifications({ token }));
+      })
+      .catch(() =>
+        dispatch({ type: ActionEnums.MARK_NOTIFICATIONS_AS_READ_FAIL })
       );
   };

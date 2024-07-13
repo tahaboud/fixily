@@ -117,7 +117,13 @@ const Body = () => {
     }
   }, [uploading, uploadProgress, setUploadProgress, setStep, step]);
   return (
-    <Box sx={{ height: "80vh", backgroundColor: "#FFFFFF" }}>
+    <Box
+      sx={{
+        height: "100vh",
+        backgroundColor: "#FFFFFF",
+        padding: "2em",
+      }}
+    >
       <Container maxWidth="lg" sx={{ height: "100%" }}>
         <Box
           sx={{

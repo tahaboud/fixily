@@ -170,7 +170,7 @@ export const adminUpdateCategory =
         dispatch({
           type: ActionEnums.ADMIN_UPDATE_CATEGORY_SUCCESS,
         });
-        dispatch(getCategories({ token }));
+        dispatch(getCategories());
       })
       .catch((err) => {
         dispatch({
@@ -203,7 +203,7 @@ export const adminDeleteCategory =
         dispatch({
           type: ActionEnums.ADMIN_DELETE_CATEGORY_SUCCESS,
         });
-        dispatch(getCategories({ token }));
+        dispatch(getCategories());
       })
       .catch((err) => {
         dispatch({
@@ -240,7 +240,7 @@ export const adminCreateCategory =
         dispatch({
           type: ActionEnums.ADMIN_CREATE_CATEGORY_SUCCESS,
         });
-        dispatch(getCategories({ token }));
+        dispatch(getCategories());
       })
       .catch((err) => {
         dispatch({
@@ -287,7 +287,7 @@ export const adminUpdateSubCategory =
         dispatch({
           type: ActionEnums.ADMIN_UPDATE_SUB_CATEGORY_SUCCESS,
         });
-        dispatch(getSubCategories({ token, categoryIds: [categoryId] }));
+        dispatch(getSubCategories({ categoryIds: [categoryId] }));
       })
       .catch((err) => {
         dispatch({
@@ -320,7 +320,7 @@ export const adminDeleteSubCategory =
         dispatch({
           type: ActionEnums.ADMIN_DELETE_SUB_CATEGORY_SUCCESS,
         });
-        dispatch(getSubCategories({ token, categoryIds: [categoryId] }));
+        dispatch(getSubCategories({ categoryIds: [categoryId] }));
       })
       .catch((err) => {
         dispatch({
@@ -366,7 +366,7 @@ export const adminCreateSubCategory =
         dispatch({
           type: ActionEnums.ADMIN_CREATE_SUB_CATEGORY_SUCCESS,
         });
-        dispatch(getSubCategories({ token, categoryIds: [categoryId] }));
+        dispatch(getSubCategories({ categoryIds: [categoryId] }));
       })
       .catch((err) => {
         dispatch({
@@ -416,6 +416,85 @@ export const adminCreateAdmin =
       .catch((err) => {
         dispatch({
           type: ActionEnums.ADMIN_CREATE_ADMIN_FAIL,
+          payload: err.response.data,
+        });
+      });
+  };
+
+export const adminGetPaymentReceipts =
+  ({ token }: { token: string }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.ADMIN_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    axios
+      .get(
+        `${
+          import.meta.env.VITE_REACT_APP_API_URL
+        }/services/admin/payment-receipts/`,
+        config
+      )
+      .then((res) => {
+        dispatch({
+          type: ActionEnums.ADMIN_GET_PAYMENT_RECEIPT_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: ActionEnums.ADMIN_GET_PAYMENT_RECEIPT_FAIL,
+          payload: err.response.data,
+        });
+      });
+  };
+
+export const adminUpdatePaymentReceipt =
+  ({
+    token,
+    receiptId,
+    status,
+  }: {
+    token: string;
+    receiptId: string;
+    status: "approved" | "denied";
+  }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.ADMIN_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    const data = JSON.stringify({
+      status,
+    });
+
+    axios
+      .patch(
+        `${
+          import.meta.env.VITE_REACT_APP_API_URL
+        }/services/admin/payment-receipts/${receiptId}/`,
+        data,
+        config
+      )
+      .then(() => {
+        dispatch({
+          type: ActionEnums.ADMIN_UPDATE_PAYMENT_RECEIPT_SUCCESS,
+        });
+        dispatch(adminGetPaymentReceipts({ token }));
+      })
+      .catch((err) => {
+        dispatch({
+          type: ActionEnums.ADMIN_UPDATE_PAYMENT_RECEIPT_FAIL,
           payload: err.response.data,
         });
       });

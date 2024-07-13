@@ -1,34 +1,50 @@
-import { Category, Commune, SubCategory, User, Wilaya } from "../../types";
+import {
+  Category,
+  ChatRoom,
+  Commune,
+  ErrorResponse,
+  Job,
+  JobUser,
+  Notification,
+  PreviousJob,
+  SubCategory,
+  User,
+  Wilaya,
+} from "../../types";
 
-interface Details {
+interface Detail {
   state_code?: string;
-  details?: Array<string> | string;
-}
-interface Errors {
-  details?: Array<string> | string;
-  error?: string;
-  email?: string;
-  phone_number?: string;
-  first_name?: string;
-  last_name?: string;
-  password?: string;
+  detail?: Array<string> | string;
 }
 
 export interface AuthState {
   userIsLoading: boolean;
   isAuthenticated: boolean;
+  isArtisan: boolean;
   token: string | null;
   data: User | null;
-  details: Details | null;
-  errors: Errors | null;
+  detail: Detail | null;
+  errors: { type: string; errors: Array<ErrorResponse> } | null;
   userDataFetchedFromToken: boolean;
+  notifications: {
+    unseen_notifications_count: number;
+    notifications: Array<Notification>;
+  } | null;
+}
+
+export interface PaymentReceipt {
+  id: string;
+  user: JobUser;
+  receipt: string;
+  status: "approved" | "denied" | "pending";
 }
 
 export interface AdminState {
   adminIsLoading: boolean;
   data: Array<User> | null;
-  details: Details | null;
-  errors: Errors | null;
+  details: Detail | null;
+  errors: { type: string; errors: Array<ErrorResponse> } | null;
+  paymentReceipts: Array<PaymentReceipt> | null;
 }
 
 export interface ServicesState {
@@ -37,5 +53,14 @@ export interface ServicesState {
   subCategories: Array<SubCategory> | null;
   wilayas: Array<Wilaya> | null;
   communes: Array<Commune> | null;
-  errors: Errors | null;
+  jobs: Array<Job> | null;
+  previousJobs: Array<PreviousJob> | null;
+  errors: { type: string; errors: Array<ErrorResponse> } | null;
+  details: string | null;
+}
+
+export interface ChatState {
+  chatIsLoading: boolean;
+  rooms: Array<ChatRoom> | null;
+  errors: { type: string; errors: Array<ErrorResponse> } | null;
 }

@@ -26,6 +26,7 @@ const Settings = () => {
     setCategoryArTitle(category.name_ar);
     setCategoryEnTitle(category.name_en);
     setPictureUrl(category.image);
+    setPicture(null);
   };
   const handleCreateSave = () => {
     if (token) {
@@ -34,7 +35,7 @@ const Settings = () => {
           dispatch(
             adminUpdateCategory({
               token,
-              categoryId: selectedCategory.pk,
+              categoryId: selectedCategory.id,
               nameAr: categoryArTitle,
               nameEn: categoryEnTitle,
               image: picture,
@@ -44,7 +45,7 @@ const Settings = () => {
           dispatch(
             adminUpdateCategory({
               token,
-              categoryId: selectedCategory.pk,
+              categoryId: selectedCategory.id,
               nameAr: categoryArTitle,
               nameEn: categoryEnTitle,
             })
@@ -64,6 +65,10 @@ const Settings = () => {
         setSelectedCategory(null);
         setCreatingCategory(false);
       } else {
+        setCategoryArTitle("");
+        setCategoryEnTitle("");
+        setPicture(null);
+        setPictureUrl(null);
         setCreatingCategory(true);
       }
     }

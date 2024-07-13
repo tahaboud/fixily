@@ -39,7 +39,7 @@ const Step1 = ({
   }, [image]);
   useEffect(() => {
     if (data && data.picture) {
-      setImageUrl(`${import.meta.env.VITE_REACT_APP_API_URL}${data.picture}`);
+      setImageUrl(`${import.meta.env.VITE_REACT_APP_IMAGE_URL}${data.picture}`);
       setImageUploaded(true);
     }
   }, [data]);

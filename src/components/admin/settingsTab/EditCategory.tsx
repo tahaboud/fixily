@@ -48,7 +48,7 @@ const EditCategory = ({
   const { token } = useAppSelector((state) => state.auth);
   useEffect(() => {
     if (token && category) {
-      dispatch(getSubCategories({ token, categoryIds: [category.pk] }));
+      dispatch(getSubCategories({ categoryIds: [category.id] }));
     }
   }, [token, dispatch, category]);
   useEffect(() => {
@@ -81,7 +81,7 @@ const EditCategory = ({
             backgroundColor: "#D9D9D9",
             backgroundImage: picture
               ? `url(${pictureUrl})`
-              : `url(${import.meta.env.VITE_REACT_APP_API_URL}${pictureUrl})`,
+              : `url(${import.meta.env.VITE_REACT_APP_IMAGE_URL}${pictureUrl})`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",
             borderRadius: "8px",
@@ -163,13 +163,13 @@ const EditCategory = ({
                       border: "1px solid #2C3E504D",
                       padding: "1em",
                       backgroundColor:
-                        selectedSubCategory?.pk === subCategory.pk
+                        selectedSubCategory?.id === subCategory.id
                           ? "#7CA5F4"
                           : "transparent",
                       userSelect: "none",
                       "&:hover": {
                         backgroundColor:
-                          selectedSubCategory?.pk === subCategory.pk
+                          selectedSubCategory?.id === subCategory.id
                             ? "#6c99f3"
                             : "#F5F7F8",
                         cursor: "pointer",
@@ -196,7 +196,12 @@ const EditCategory = ({
                     cursor: "pointer",
                   },
                 }}
-                onClick={() => setCreatingSubCategory(true)}
+                onClick={() => {
+                  setCreatingSubCategory(true);
+                  setSubCategoryArTitle("");
+                  setSubCategoryEnTitle("");
+                  setSubCategoryPoints(0);
+                }}
               >
                 <Typography textAlign={"center"} sx={{ color: "#447EEF" }}>
                   {t("Add")}

@@ -14,7 +14,7 @@ const Categories = ({
   const { token } = useAppSelector((state) => state.auth);
   useEffect(() => {
     if (token) {
-      dispatch(getCategories({ token }));
+      dispatch(getCategories());
     }
   }, [token, dispatch]);
   return (
@@ -22,7 +22,7 @@ const Categories = ({
       {categories &&
         categories.map((category) => (
           <Box
-            key={category.pk}
+            key={category.id}
             sx={{
               display: "flex",
               flexDirection: "column",
@@ -34,7 +34,7 @@ const Categories = ({
                 height: "7em",
                 width: "7em",
                 backgroundImage: `url(${
-                  import.meta.env.VITE_REACT_APP_API_URL
+                  import.meta.env.VITE_REACT_APP_IMAGE_URL
                 }${category.image})`,
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",

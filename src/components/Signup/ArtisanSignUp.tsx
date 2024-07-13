@@ -6,7 +6,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import PersonIcon from "@mui/icons-material/Person";
 import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
 import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,7 @@ import {
   sendOTP,
   verifyOTP,
 } from "../../state/actions/authActions";
+import { ActionEnums } from "../../state/types/actionEnums";
 import {
   validateArtisanConfirmOTP,
   validateArtisanPhoneNumberSignup,
@@ -28,21 +29,29 @@ import {
   ArtisanSignUpPhoneNumberValidationErrors,
   ArtisanSignUpValidationErrors,
 } from "../../validators/types";
+import {
+  SnackbarContext,
+  SnackbarContextType,
+} from "../common/SnackbarContext";
 
 const ArtisanSignUp = () => {
-  let interval: NodeJS.Timeout;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const { t } = useTranslation();
   const {
     isAuthenticated,
     userIsLoading,
-    details,
+    detail,
     errors: serverErrors,
   } = useAppSelector((state) => state.auth);
+
+  const { setSnack } = useContext<SnackbarContextType>(SnackbarContext);
+
   const [registrationStep, setRegistrationStep] = useState<
     "userData" | "otp" | "phoneNumber"
   >("phoneNumber");
+  const [otpInterval, setOtpInterval] = useState<NodeJS.Timeout | null>(null);
   const [phoneNumber, setPhoneNumber] = useState("+213");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -59,15 +68,17 @@ const ArtisanSignUp = () => {
         ArtisanSignUpPhoneNumberValidationErrors)
     | null
   >(null);
+
   useEffect(() => {
     if (isAuthenticated) {
       if (registrationStep === "userData") {
-        navigate("/photo");
+        navigate("/categories");
       } else {
         navigate("/");
       }
     }
   }, [isAuthenticated, navigate, registrationStep]);
+
   const handleArtisanSendOTP = () => {
     const unmaskedPhoneNumber = `+${phoneNumber.replace(/\D/g, "")}`;
     const { isValid, validationErrors } = validateArtisanPhoneNumberSignup({
@@ -75,11 +86,11 @@ const ArtisanSignUp = () => {
     });
     if (isValid) {
       dispatch(sendOTP({ phoneNumber: unmaskedPhoneNumber }));
-      startCountdown();
     } else {
       setErrors(validationErrors);
     }
   };
+
   const handleConfirmOTP = () => {
     const { isValid, validationErrors } = validateArtisanConfirmOTP({ otp });
     if (isValid) {
@@ -89,6 +100,7 @@ const ArtisanSignUp = () => {
       setErrors(validationErrors);
     }
   };
+
   const handleArtisanSignUp = () => {
     const unmaskedPhoneNumber = `+${phoneNumber.replace(/\D/g, "")}`;
     const { isValid, validationErrors } = validateArtisanSignUp({
@@ -114,74 +126,98 @@ const ArtisanSignUp = () => {
       setErrors(validationErrors);
     }
   };
+
   const handleResendOTP = () => {
     const unmaskedPhoneNumber = `+${phoneNumber.replace(/\D/g, "")}`;
     dispatch(sendOTP({ phoneNumber: unmaskedPhoneNumber }));
-    startCountdown();
   };
-  useEffect(() => {
-    if (
-      details &&
-      details.details &&
-      details.details[0].indexOf("OTP sent to")
-    ) {
-      setRegistrationStep("otp");
-    }
-    if (details && details.details && details.details === "Valid code.") {
-      setRegistrationStep("userData");
-    }
 
-    if (
-      serverErrors &&
-      serverErrors.details &&
-      serverErrors.details === "Invalid code."
-    ) {
-      setErrors({ otp: "invalid_otp" });
+  useEffect(() => {
+    if (serverErrors) {
+      if (registrationStep === "phoneNumber") {
+        if (
+          serverErrors.type === "validation_error" &&
+          serverErrors.errors[0].attr === "phone_number"
+        ) {
+          setErrors((currentErrors) => {
+            return { ...currentErrors, phoneNumber: "phone_already_in_use" };
+          });
+        }
+      } else if (registrationStep === "otp") {
+        if (
+          serverErrors.type === "validation_error" &&
+          serverErrors.errors[0].attr === "code"
+        ) {
+          setErrors((currentErrors) => {
+            return { ...currentErrors, otp: "invalid_otp" };
+          });
+        }
+      } else if (registrationStep === "userData") {
+        if (
+          serverErrors.type === "validation_error" &&
+          serverErrors.errors[0].attr === "email"
+        ) {
+          setErrors((currentErrors) => {
+            return { ...currentErrors, email: "email_already_in_use" };
+          });
+        }
+      }
     }
-    if (serverErrors && serverErrors.email) {
-      setErrors((currentErrors) => {
-        return { ...currentErrors, email: serverErrors.email };
-      });
+  }, [serverErrors, registrationStep]);
+
+  useEffect(() => {
+    if (detail) {
+      if (
+        registrationStep === "phoneNumber" &&
+        detail.detail &&
+        detail.detail.indexOf("OTP sent to") === 0
+      ) {
+        dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
+        setRegistrationStep("otp");
+        startCountdown();
+      } else if (registrationStep === "otp" && detail.detail) {
+        if (detail.detail.indexOf("OTP sent to") === 0) {
+          dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
+          setSnack({
+            message: t("otp_resent"),
+            color: "success",
+            open: true,
+            duration: 2000,
+          });
+          startCountdown();
+        } else if (detail.detail === "Valid code.") {
+          dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
+          setRegistrationStep("userData");
+        }
+      }
     }
-    if (serverErrors && serverErrors.password) {
-      setErrors((currentErrors) => {
-        return { ...currentErrors, password: serverErrors.password };
-      });
-    }
-    if (serverErrors && serverErrors.first_name) {
-      setErrors((currentErrors) => {
-        return { ...currentErrors, firstName: serverErrors.first_name };
-      });
-    }
-    if (serverErrors && serverErrors.last_name) {
-      setErrors((currentErrors) => {
-        return { ...currentErrors, lastName: serverErrors.last_name };
-      });
-    }
-    if (serverErrors && serverErrors.phone_number) {
-      setErrors((currentErrors) => {
-        return { ...currentErrors, phoneNumber: serverErrors.phone_number };
-      });
-    }
-  }, [details, serverErrors]);
+  }, [detail, dispatch, registrationStep, setSnack, t]);
 
   const startCountdown = () => {
-    let counter = 60;
-    interval = setInterval(() => {
-      if (counter === 0) {
-        clearInterval(interval);
-      }
-      setOtpCounter(counter);
-      counter -= 1;
+    setOtpCounter(60);
+    const localInterval = setInterval(() => {
+      setOtpCounter((oldCounter) => oldCounter - 1);
     }, 1000) as NodeJS.Timeout;
+    setOtpInterval(localInterval);
   };
+
   const handleBack = () => {
+    setOtpCounter(0);
+    if (otpInterval) {
+      clearInterval(otpInterval);
+    }
     if (registrationStep === "otp") {
       setPhoneNumber("+213");
       setRegistrationStep("phoneNumber");
-      setOtpCounter(0);
     }
   };
+
+  useEffect(() => {
+    if (otpCounter === 0 && otpInterval) {
+      clearInterval(otpInterval);
+    }
+  }, [otpCounter, otpInterval]);
+
   return (
     <Box sx={{ display: "flex", height: "100vh", backgroundColor: "#FFFFFF" }}>
       <Box
@@ -498,7 +534,7 @@ const ArtisanSignUp = () => {
                   setPhoneNumber(e.target.value);
                   setErrors(null);
                 }}
-                maskChar={" "}
+                maskPlaceholder={" "}
                 children={
                   <TextField
                     type="tel"

@@ -23,7 +23,7 @@ const Header = ({
   const dispatch = useAppDispatch();
   const handleDeleteCategory = () => {
     if (token && selectedCategory) {
-      dispatch(adminDeleteCategory({ token, categoryId: selectedCategory.pk }));
+      dispatch(adminDeleteCategory({ token, categoryId: selectedCategory.id }));
       setSelectedCategory(null);
     }
   };

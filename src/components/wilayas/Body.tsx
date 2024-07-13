@@ -24,52 +24,68 @@ import { getCommunes, getWilayas } from "../../state/actions/servicesAction";
 import { ActionEnums } from "../../state/types/actionEnums";
 
 const Body = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { token, userIsLoading, details, data } = useAppSelector(
+
+  const { token, userIsLoading, detail, data } = useAppSelector(
     (state) => state.auth
   );
   const { wilayas, communes } = useAppSelector((state) => state.services);
+
   const [wilaya, setWilaya] = useState<string>("");
   const [commune, setCommune] = useState<string>("");
-  const { t } = useTranslation();
+
   useEffect(() => {
     if (token) {
-      dispatch(getWilayas({ token }));
+      dispatch(getWilayas());
     }
   }, [token, dispatch]);
+
   const handleChangeWilaya = (e: SelectChangeEvent<string>) => {
     setWilaya(e.target.value);
     if (token) {
-      dispatch(getCommunes({ token, wilayaId: e.target.value }));
+      dispatch(getCommunes({ wilayaId: e.target.value }));
     }
   };
+
   const handleNext = () => {
     if (token) {
       dispatch(updateUser({ token, wilaya, commune }));
     }
   };
+
   useEffect(() => {
-    if (details && details.details === "user updated successfully") {
-      navigate("/availability");
+    if (detail && detail.detail === "user updated successfully") {
+      navigate("/photo");
     }
-  }, [details, navigate]);
+  }, [detail, navigate]);
+
   useEffect(() => {
     dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
   }, [dispatch]);
+
   useEffect(() => {
     if (token && data && data.wilaya) {
-      setWilaya(data.wilaya.pk);
-      dispatch(getCommunes({ token, wilayaId: data.wilaya.pk }));
+      setWilaya(data.wilaya.id);
+      dispatch(getCommunes({ wilayaId: data.wilaya.id }));
     }
     if (token && data && data.commune) {
-      setCommune(data.commune.pk);
+      setCommune(data.commune.id);
     }
   }, [data, dispatch, token]);
+
   return (
-    <Box sx={{ height: "80vh", backgroundColor: "#FFFFFF" }}>
-      <Container maxWidth="lg" sx={{ height: "100%" }}>
-        <Box sx={{ height: "100%" }}>
+    <Box sx={{ height: "100vh", backgroundColor: "#FFFFFF" }}>
+      <Container maxWidth="lg">
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            height: "90vh",
+            margin: "1em 0",
+          }}
+        >
           <Box
             sx={{
               display: "flex",
@@ -77,7 +93,7 @@ const Body = () => {
               alignItems: "center",
               justifyContent: "center",
               gap: "1em",
-              height: "100%",
+              flex: 1,
             }}
           >
             <img src={logoImage} />
@@ -107,7 +123,7 @@ const Body = () => {
                 </MenuItem>
                 {wilayas &&
                   wilayas.map((serverWilaya) => (
-                    <MenuItem key={serverWilaya.pk} value={serverWilaya.pk}>
+                    <MenuItem key={serverWilaya.id} value={serverWilaya.id}>
                       {serverWilaya.name_en}
                     </MenuItem>
                   ))}
@@ -136,7 +152,7 @@ const Body = () => {
                 </MenuItem>
                 {communes &&
                   communes.map((serverCommune) => (
-                    <MenuItem key={serverCommune.pk} value={serverCommune.pk}>
+                    <MenuItem key={serverCommune.id} value={serverCommune.id}>
                       {serverCommune.name_en}
                     </MenuItem>
                   ))}
