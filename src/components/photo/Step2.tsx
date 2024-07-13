@@ -1,5 +1,13 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import { Box, Button, IconButton, TextField, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  TextField,
+  Typography,
+} from "@mui/material";
 import {
   ChangeEvent,
   Dispatch,
@@ -24,9 +32,17 @@ import {
 const Step2 = ({
   bio,
   setBio,
+  uploadProgress,
+  uploading,
+  setUploadProgress,
+  setUploading,
 }: {
   bio: string;
   setBio: Dispatch<SetStateAction<string>>;
+  uploading: boolean;
+  uploadProgress: number;
+  setUploading: Dispatch<SetStateAction<boolean>>;
+  setUploadProgress: Dispatch<SetStateAction<number>>;
 }) => {
   const dispatch = useAppDispatch();
 
@@ -49,7 +65,14 @@ const Step2 = ({
         });
         return;
       }
-      dispatch(updateUser({ token, previousWorkPhotos: e.target.files }));
+      setUploading(true);
+      dispatch(
+        updateUser({
+          token,
+          previousWorkPhotos: e.target.files,
+          setUploadProgress,
+        })
+      );
     }
   };
   const handleDeleteImage = (index: string) => {
@@ -65,6 +88,12 @@ const Step2 = ({
       setBio(data.bio);
     }
   }, [data, setBio]);
+  useEffect(() => {
+    if (uploading && uploadProgress === 100) {
+      setUploadProgress(0);
+      setUploading(false);
+    }
+  }, [uploadProgress, uploading, setUploadProgress, setUploading]);
   return (
     <Box
       sx={{
@@ -132,7 +161,7 @@ const Step2 = ({
           >
             {images.map((image) => (
               <Box
-                key={image.pk}
+                key={image.id}
                 sx={{
                   width: "5em",
                   height: "5em",
@@ -140,7 +169,7 @@ const Step2 = ({
                   borderRadius: "8px",
                   backgroundColor: "#D9D9D9",
                   backgroundImage: `url(${
-                    import.meta.env.VITE_REACT_APP_API_URL
+                    import.meta.env.VITE_REACT_APP_IMAGE_URL
                   }${image.image})`,
                   backgroundSize: "contain",
                   backgroundRepeat: "no-repeat",
@@ -156,7 +185,7 @@ const Step2 = ({
                     padding: 0,
                     transform: "translate(50%,-50%)",
                   }}
-                  onClick={() => handleDeleteImage(image.pk)}
+                  onClick={() => handleDeleteImage(image.id)}
                   disabled={userIsLoading}
                 >
                   <CancelIcon sx={{ color: "#FC4848" }} />
@@ -166,6 +195,13 @@ const Step2 = ({
           </Box>
         )}
       </Box>
+      <Backdrop sx={{ color: "#fff", zIndex: 10 }} open={uploading}>
+        <CircularProgress
+          color="inherit"
+          variant="determinate"
+          value={uploadProgress}
+        />
+      </Backdrop>
     </Box>
   );
 };

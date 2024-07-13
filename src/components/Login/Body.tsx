@@ -9,15 +9,19 @@ import { useAppSelector } from "../../hooks";
 const Body = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+
   const { isAuthenticated } = useAppSelector((state) => state.auth);
+
   const handleOnClick = ({ userType }: { userType: "client" | "artisan" }) => {
     navigate(`/login/${userType}`);
   };
+
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/account");
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigate]);
+
   return (
     <Box sx={{ display: "flex" }}>
       <Box
@@ -56,6 +60,7 @@ const Body = () => {
               fontWeight: "700",
               letterSpacing: "0.03em",
               textAlign: "right",
+              userSelect: "none",
             }}
           >
             {t("client")}
@@ -66,6 +71,7 @@ const Body = () => {
               fontSize: "1.7rem",
               fontWeight: "500",
               textAlign: "right",
+              userSelect: "none",
             }}
           >
             {t("Je suis un client cherche un professionel")}
@@ -107,6 +113,7 @@ const Body = () => {
               textTransform: "uppercase",
               fontWeight: "700",
               letterSpacing: "0.03em",
+              userSelect: "none",
             }}
           >
             {t("artisan")}
@@ -116,6 +123,7 @@ const Body = () => {
               color: "#FFFFFF",
               fontSize: "1.7rem",
               fontWeight: "500",
+              userSelect: "none",
             }}
           >
             {t("Je suis un client cherche un professionel")}

@@ -25,7 +25,7 @@ const ClientLogin = () => {
   const dispatch = useAppDispatch();
   const {
     isAuthenticated,
-    details,
+    detail,
     errors: serverErrors,
     userIsLoading,
   } = useAppSelector((state) => state.auth);
@@ -49,12 +49,12 @@ const ClientLogin = () => {
   };
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/");
+      navigate("/account");
     }
-    if (waitingForStateCode && details && details.state_code && loginProvider) {
-      location.href = generateSocialLoginUrl(loginProvider, details.state_code);
+    if (waitingForStateCode && detail && detail.state_code && loginProvider) {
+      location.href = generateSocialLoginUrl(loginProvider, detail.state_code);
     }
-  }, [details, isAuthenticated, navigate, loginProvider, waitingForStateCode]);
+  }, [detail, isAuthenticated, navigate, loginProvider, waitingForStateCode]);
   useEffect(() => {
     const code = searchParams.get("code");
     const state = searchParams.get("state");
@@ -76,11 +76,7 @@ const ClientLogin = () => {
     }
   };
   useEffect(() => {
-    if (
-      serverErrors &&
-      serverErrors.details &&
-      serverErrors.details[0] === "Incorrect credentials."
-    ) {
+    if (serverErrors && serverErrors.type === "validation_error") {
       setErrors({
         email: "incorrect_credentials",
         password: "incorrect_credentials",

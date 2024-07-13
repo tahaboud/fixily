@@ -18,7 +18,7 @@ const Body = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { categories } = useAppSelector((state) => state.services);
-  const { token, details, userIsLoading, data } = useAppSelector(
+  const { token, detail, userIsLoading, data } = useAppSelector(
     (state) => state.auth
   );
   const { setSnack } = useContext<SnackbarContextType>(SnackbarContext);
@@ -26,14 +26,17 @@ const Body = () => {
   const [selectedCategories, setSelectedCategories] = useState<Array<string>>(
     []
   );
+
   useEffect(() => {
     dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
   }, [dispatch]);
+
   useEffect(() => {
     if (token) {
-      dispatch(getCategories({ token }));
+      dispatch(getCategories());
     }
   }, [dispatch, token]);
+
   const handleToggleCategory = ({ categoryId }: { categoryId: string }) => {
     if (selectedCategories.includes(categoryId)) {
       setSelectedCategories((oldCategories) => {
@@ -58,24 +61,31 @@ const Body = () => {
       }
     }
   };
+
   const handleNext = () => {
     if (token) {
       dispatch(updateUser({ token, categories: selectedCategories }));
     }
   };
+
   useEffect(() => {
-    if (details && details.details === "user updated successfully") {
+    if (detail && detail.detail === "user updated successfully") {
+      dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
       navigate("/sub-categories");
     }
-  }, [details, navigate]);
+  }, [detail, navigate, dispatch]);
+
   useEffect(() => {
     if (data && data.categories) {
-      setSelectedCategories(data.categories);
+      const userCategories: Array<string> = [];
+      data.categories.map((cat) => userCategories.push(cat.id));
+      setSelectedCategories([...userCategories]);
     }
   }, [data]);
+
   return (
-    <Box sx={{ backgroundColor: "#FFFFFF" }}>
-      <Container maxWidth="lg">
+    <Box sx={{ backgroundColor: "#FFFFFF", height: "100vh" }}>
+      <Container maxWidth="md">
         <Box
           sx={{
             display: "flex",
@@ -83,7 +93,7 @@ const Body = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: "1em",
-            height: "80vh",
+            height: "100vh",
           }}
         >
           <img src={logoImage} />
@@ -94,20 +104,20 @@ const Body = () => {
             sx={{
               display: "flex",
               flexWrap: "wrap",
-              gap: "1em",
+              gap: "2em",
               justifyContent: "center",
             }}
           >
             {categories?.map((category) => (
               <Box
-                key={category.pk}
+                key={category.id}
                 sx={{
-                  width: "9em",
+                  width: "7em",
                   height: "12em",
                   position: "relative",
                 }}
               >
-                {selectedCategories.includes(category.pk) ? (
+                {selectedCategories.includes(category.id) ? (
                   <Box
                     sx={{
                       position: "absolute",
@@ -129,8 +139,8 @@ const Body = () => {
                 ) : null}
                 <Box
                   sx={{
-                    height: "9em",
-                    width: "9em",
+                    height: "7em",
+                    width: "7em",
                     borderRadius: "8px",
                     overflow: "hidden",
                     "&:hover": {
@@ -139,11 +149,11 @@ const Body = () => {
                     },
                   }}
                   onClick={() =>
-                    handleToggleCategory({ categoryId: category.pk })
+                    handleToggleCategory({ categoryId: category.id })
                   }
                 >
                   <img
-                    src={`${import.meta.env.VITE_REACT_APP_API_URL}${
+                    src={`${import.meta.env.VITE_REACT_APP_IMAGE_URL}${
                       category.image
                     }`}
                     style={{

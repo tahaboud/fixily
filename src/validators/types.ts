@@ -10,9 +10,33 @@ export interface ValidateArtisanLoginParams {
   phoneNumber: string;
   password: string;
 }
+export interface ValidateArtisanEditProfileParams {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  bio: string;
+}
+export interface ValidateClientEditProfileParams {
+  firstName?: string;
+  lastName?: string;
+  email: string;
+  bio: string;
+}
 export interface ArtisanLoginValidationErrors {
   phoneNumber?: string;
   password?: string;
+}
+export interface ArtisanEditProfileValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  bio?: string;
+}
+export interface ClientEditProfileValidationErrors {
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  bio?: string;
 }
 export interface ValidateArtisanSignUpParams {
   password: string;

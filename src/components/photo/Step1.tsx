@@ -1,5 +1,5 @@
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import {
   Dispatch,
   SetStateAction,
@@ -15,9 +15,13 @@ import { ActionEnums } from "../../state/types/actionEnums";
 const Step1 = ({
   image,
   setImage,
+  uploadProgress,
+  uploading,
 }: {
   image: File | null;
   setImage: Dispatch<SetStateAction<File | null>>;
+  uploadProgress: number;
+  uploading: boolean;
 }) => {
   const { t } = useTranslation();
   const fileInputRef = createRef<HTMLInputElement>();
@@ -35,7 +39,7 @@ const Step1 = ({
   }, [image]);
   useEffect(() => {
     if (data && data.picture) {
-      setImageUrl(`${import.meta.env.VITE_REACT_APP_API_URL}${data.picture}`);
+      setImageUrl(`${import.meta.env.VITE_REACT_APP_IMAGE_URL}${data.picture}`);
       setImageUploaded(true);
     }
   }, [data]);
@@ -112,6 +116,27 @@ const Step1 = ({
           >
             <FaceImageIcon />
           </Box>
+          {uploading && (
+            <Box
+              sx={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                height: "100%",
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#00000080",
+              }}
+            >
+              <CircularProgress
+                size={50}
+                variant="determinate"
+                value={uploadProgress}
+              />
+            </Box>
+          )}
         </Box>
       </Box>
       <Typography sx={{ textAlign: "center" }}>

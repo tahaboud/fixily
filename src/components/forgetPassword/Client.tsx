@@ -1,7 +1,7 @@
 import EmailIcon from "@mui/icons-material/Email";
 import LockIcon from "@mui/icons-material/Lock";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import clientImage from "../../assets/client.png";
@@ -12,6 +12,7 @@ import {
   requestResetPassword,
   resetPassword,
 } from "../../state/actions/authActions";
+import { ActionEnums } from "../../state/types/actionEnums";
 import {
   validateClientForgetPassword,
   validateClientForgetPasswordOTP,
@@ -22,13 +23,18 @@ import {
   ClientForgotPasswordResetPasswordValidationErrors,
   ClientForgotPasswordValidationErrors,
 } from "../../validators/types";
+import {
+  SnackbarContext,
+  SnackbarContextType,
+} from "../common/SnackbarContext";
 
 const Client = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { setSnack } = useContext<SnackbarContextType>(SnackbarContext);
   const {
     userIsLoading,
-    details,
+    detail,
     errors: serverErrors,
   } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
@@ -78,35 +84,45 @@ const Client = () => {
     }
   };
   useEffect(() => {
-    if (details && details.details) {
+    if (detail && detail.detail) {
+      console.log(detail);
+
       if (
-        details.details ===
-        "A reset password email has been sent to the user associated with this email if it exists."
+        detail.detail ===
+        "A reset password Email has been sent to the user associated with this Email if it exists."
       ) {
+        dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
         setForgotPasswordStep("otp");
-      } else if (details.details === "Valid code.") {
+      } else if (detail.detail === "Valid code.") {
+        dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
         setForgotPasswordStep("resetPassword");
-      } else if (
-        details.details === "Password has been changed successfully."
-      ) {
+      } else if (detail.detail === "Password has been changed successfully.") {
+        dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
+        setSnack({
+          message: t("password_reset_success"),
+          color: "success",
+          open: true,
+          duration: 3000,
+        });
         navigate("/login/client");
       }
     }
 
-    if (
-      serverErrors &&
-      serverErrors.details &&
-      serverErrors.details === "Invalid code."
-    ) {
+    if (serverErrors && serverErrors.type === "validation_error") {
       setErrors({ otp: "invalid_otp" });
     }
-  }, [details, navigate, serverErrors]);
+  }, [detail, navigate, serverErrors, dispatch, setSnack, t]);
   return (
     <>
       <Box sx={{ display: "flex", height: "100vh" }}>
         <Box
           sx={{
-            width: "75%",
+            width: {
+              xl: "75%",
+              lg: "60%",
+              md: "50%",
+              sm: "0%",
+            },
             height: "100%",
             backgroundImage: `url(${clientImage})`,
             backgroundRepeat: "no-repeat",
@@ -128,7 +144,7 @@ const Client = () => {
         </Box>
         <Box
           sx={{
-            width: "25%",
+            flex: 1,
             height: "100%",
             display: "flex",
             flexDirection: "column",

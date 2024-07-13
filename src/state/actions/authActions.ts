@@ -108,8 +108,11 @@ export const registerClient =
       .then((res) => {
         dispatch({ type: ActionEnums.SIGN_UP_SUCCESS, payload: res.data });
       })
-      .catch(() => {
-        dispatch({ type: ActionEnums.SIGN_UP_FAIL });
+      .catch((err) => {
+        dispatch({
+          type: ActionEnums.SIGN_UP_FAIL,
+          payload: err.response.data,
+        });
       });
   };
 
@@ -383,6 +386,11 @@ export const updateUser =
     picture,
     previousWorkPhotos,
     bio,
+    setUploadProgress,
+    setUploading,
+    availability,
+    isOnHolidayMode,
+    email,
   }: UpdateUserActionParams) =>
   (dispatch: AppDispatch) => {
     dispatch({ type: ActionEnums.AUTH_IS_LOADING });
@@ -393,6 +401,24 @@ export const updateUser =
         Authorization: `Token ${token}`,
       },
     };
+
+    if (setUploadProgress && picture) {
+      config.onUploadProgress = (progress) => {
+        const uploadProgress = (progress.loaded * 100) / picture.size;
+        setUploadProgress(uploadProgress > 100 ? 100 : uploadProgress);
+      };
+    }
+
+    if (setUploadProgress && previousWorkPhotos) {
+      config.onUploadProgress = (progress) => {
+        let totalSize = 0;
+        Array.from(previousWorkPhotos).map(
+          (photo) => (totalSize += photo.size)
+        );
+        const uploadProgress = (progress.loaded * 100) / totalSize;
+        setUploadProgress(uploadProgress > 100 ? 100 : uploadProgress);
+      };
+    }
 
     const formData = new FormData();
     if (firstName) {
@@ -416,12 +442,15 @@ export const updateUser =
     if (picture !== undefined) {
       formData.append("picture", picture || "");
     }
+    if (email !== undefined) {
+      formData.append("email", email);
+    }
     if (categories) {
       categories.map((category) => formData.append("categories", category));
     }
     if (subCategories) {
       subCategories.map((subCategory) =>
-        formData.append("categories", subCategory)
+        formData.append("sub_categories", subCategory)
       );
     }
     if (previousWorkPhotos) {
@@ -432,6 +461,26 @@ export const updateUser =
     if (bio) {
       formData.append("bio", bio);
     }
+    if (availability) {
+      availability.map((dayAvailability, index) => {
+        formData.append(`availability[${index}]day`, dayAvailability.day);
+        formData.append(
+          `availability[${index}]is_holiday`,
+          dayAvailability.is_holiday ? "true" : "false"
+        );
+        formData.append(
+          `availability[${index}]from_time`,
+          dayAvailability.from_time ? dayAvailability.from_time : ""
+        );
+        formData.append(
+          `availability[${index}]to_time`,
+          dayAvailability.to_time ? dayAvailability.to_time : ""
+        );
+      });
+    }
+    if (isOnHolidayMode !== undefined) {
+      formData.append("is_on_holiday_mode", isOnHolidayMode ? "true" : "false");
+    }
 
     axios
       .patch(
@@ -440,9 +489,20 @@ export const updateUser =
         config
       )
       .then((res) => {
+        if (setUploading) {
+          setUploading(false);
+        }
         dispatch({ type: ActionEnums.UPDATE_USER_SUCCESS, payload: res.data });
       })
-      .catch(() => dispatch({ type: ActionEnums.UPDATE_USER_FAIL }));
+      .catch((err) => {
+        if (setUploading) {
+          setUploading(false);
+        }
+        dispatch({
+          type: ActionEnums.UPDATE_USER_FAIL,
+          payload: err.response.data,
+        });
+      });
   };
 
 export const deletePreviousWorkPhoto =
@@ -470,5 +530,60 @@ export const deletePreviousWorkPhoto =
       })
       .catch(() =>
         dispatch({ type: ActionEnums.DELETE_PREVIOUS_WORK_PHOTO_FAIL })
+      );
+  };
+
+export const getNotifications =
+  ({ token }: { token: string }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.AUTH_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    axios
+      .get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/notifications/`,
+        config
+      )
+      .then((res) => {
+        dispatch({
+          type: ActionEnums.GET_NOTIFICATIONS_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch(() => dispatch({ type: ActionEnums.GET_NOTIFICATIONS_FAIL }));
+  };
+
+export const markNotificationsAsRead =
+  ({ token }: { token: string }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.AUTH_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    axios
+      .post(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/auth/notifications/`,
+        null,
+        config
+      )
+      .then(() => {
+        dispatch({
+          type: ActionEnums.MARK_NOTIFICATIONS_AS_READ_SUCCESS,
+        });
+        dispatch(getNotifications({ token }));
+      })
+      .catch(() =>
+        dispatch({ type: ActionEnums.MARK_NOTIFICATIONS_AS_READ_FAIL })
       );
   };

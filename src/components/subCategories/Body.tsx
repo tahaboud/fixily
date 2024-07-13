@@ -24,28 +24,33 @@ const Body = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { token, data, userIsLoading, details } = useAppSelector(
+
+  const { token, data, userIsLoading, detail } = useAppSelector(
     (state) => state.auth
   );
   const { categories, subCategories } = useAppSelector(
     (state) => state.services
   );
+
   const [selectedCategories, setSelectedCategories] = useState("");
   const [selectedSubCategories, setSelectedSubCategories] = useState<
     Array<string>
   >([]);
+
   useEffect(() => {
     if (token && data && data.categories) {
-      dispatch(getSubCategories({ token, categoryIds: data.categories }));
-      dispatch(getCategories({ token }));
+      const categoryIds: Array<string> = [];
+      data.categories.map((cat) => categoryIds.push(cat.id));
+      dispatch(getSubCategories({ categoryIds }));
+      dispatch(getCategories());
     }
   }, [token, dispatch, data]);
+
   useEffect(() => {
     if (categories && data && data.categories) {
-      const extractedNames: string[] = data.categories.map((category) => {
-        const categoryName = categories.find((cat) => cat.pk === category);
-        return categoryName ? categoryName.name_en : "";
-      });
+      const extractedNames: string[] = data.categories.map(
+        (category) => category.name_en
+      );
 
       const finalString: string = extractedNames.reduce((acc, name, index) => {
         if (index === 0) {
@@ -59,24 +64,33 @@ const Body = () => {
       setSelectedCategories(finalString);
     }
   }, [categories, data]);
+
   const handleNext = () => {
     if (token) {
       dispatch(updateUser({ token, subCategories: selectedSubCategories }));
     }
   };
-  useEffect(() => {
-    if (details && details.details === "user updated successfully") {
-      navigate("/wilayas");
-    }
-  }, [details, navigate]);
+
   useEffect(() => {
     dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
   }, [dispatch]);
+
+  useEffect(() => {
+    if (detail && detail.detail === "user updated successfully") {
+      dispatch({ type: ActionEnums.CLEAN_AUTH_STATE });
+      navigate("/wilayas");
+    }
+  }, [detail, navigate, dispatch]);
+
   useEffect(() => {
     if (data && data.sub_categories) {
-      setSelectedSubCategories(data.sub_categories);
+      const userSubCategories = data.sub_categories.map(
+        (sub_cat) => sub_cat.id
+      );
+      setSelectedSubCategories([...userSubCategories]);
     }
   }, [data]);
+
   return (
     <Box sx={{ backgroundColor: "#FFFFFF" }}>
       <Container maxWidth="lg">
@@ -87,6 +101,7 @@ const Body = () => {
             alignItems: "center",
             justifyContent: "center",
             gap: "1em",
+            height: "100vh",
           }}
         >
           <img src={logoImage} />
@@ -105,19 +120,19 @@ const Body = () => {
           >
             {subCategories?.map((subCategory) => (
               <Chip
-                key={subCategory.pk}
+                key={subCategory.id}
                 label={subCategory.name_en}
                 variant="outlined"
                 onClick={() => {
-                  if (!selectedSubCategories.includes(subCategory.pk)) {
+                  if (!selectedSubCategories.includes(subCategory.id)) {
                     setSelectedSubCategories((oldSubCategories) => [
                       ...oldSubCategories,
-                      subCategory.pk,
+                      subCategory.id,
                     ]);
                   } else {
                     setSelectedSubCategories((oldSubCategories) => {
                       const subCategoryIndex = oldSubCategories.indexOf(
-                        subCategory.pk
+                        subCategory.id
                       );
                       const newSubCategories = [...oldSubCategories];
                       newSubCategories.splice(subCategoryIndex, 1);
@@ -129,11 +144,11 @@ const Body = () => {
                   fontSize: "1.2rem",
                   padding: "0.5em 1em",
                   backgroundColor: selectedSubCategories.includes(
-                    subCategory.pk
+                    subCategory.id
                   )
                     ? "#7CA5F4"
                     : "transparent",
-                  color: selectedSubCategories.includes(subCategory.pk)
+                  color: selectedSubCategories.includes(subCategory.id)
                     ? "#FFFFFF"
                     : "#000000",
                   "&:hover": {
