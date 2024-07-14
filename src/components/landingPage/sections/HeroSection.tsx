@@ -13,15 +13,13 @@ const HeroSection = () => {
 
   return (
     <section
-      className={`px-20 h-auto bg-secondary flex ${
+      className={`px-4 md:px-20 xl:px-40 h-screen bg-secondary flex ${
         language == "ar" ? "flex-row-reverse" : ""
-      } items-center justify-around font-lato w-full max-lg:flex-col max-lg:gap-7  max-lg:py-4 max-md:gap-5 max-md:pt-6`}
-    >
+      } items-center justify-between font-lato w-full max-lg:flex-col max-lg:gap-7  max-lg:py-4 max-md:gap-5 max-lg:pt-10 pt-0`}>
       <div
         className={`flex flex-col justify-around gap-4 max-md:items-center  ${
           language == "ar" ? "text-right" : ""
-        } `}
-      >
+        } `}>
         <h1 className="text-[46px] max-md:text-[30px] font-semibold text-myblack">
           <Trans i18nKey="hero.h1" />
         </h1>
@@ -29,8 +27,7 @@ const HeroSection = () => {
         <div
           className={`flex flex-1 items-center ${
             language == "ar" ? "justify-end" : ""
-          } gap-5 max-sm:flex-col`}
-        >
+          } gap-5 max-sm:flex-col`}>
           <img src="/src/assets/apple.png" alt="" />
           <img src="/src/assets/google.png" alt="" />
         </div>
@@ -39,7 +36,7 @@ const HeroSection = () => {
         <img
           src="/src/assets/hero_image.png"
           alt=""
-          className="w-full h-auto max-w-[419px] max-h-[589px] md:max-w-[300px]"
+          className="w-full h-auto max-w-[419px] max-h-[589px] md:max-w-[500px]"
         />
       </div>
     </section>
