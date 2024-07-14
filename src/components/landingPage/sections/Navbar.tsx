@@ -38,6 +38,20 @@ const Navbar = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const lng = navigator.language;
@@ -59,13 +73,15 @@ const Navbar = () => {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full flex justify-between items-center text-4xl h-[100px] px-4 md:px-20 xl:px-40 bg-secondary z-20 ${"shadow-lg"}`}>
+      className={`fixed top-0 left-0 w-full flex justify-between items-center text-4xl h-[100px] px-4 md:px-20 xl:px-40 bg-secondary z-20 ${
+        isScrolled && "shadow-lg bg-white"
+      }`}>
       <div>
         <img src="/src/assets/fixily.png" alt="" className="w-[120px]" />
       </div>
       <div className="gap-4 items-center justify-end w-full max-w-[70%] hidden md:flex">
         <Select onValueChange={handleLanguageChange}>
-          <SelectTrigger className="text-myblack font-bold w-fit bg-secondary">
+          <SelectTrigger className="text-myblack font-bold w-fit bg-transparent">
             <img src="/src/assets/translate.png" alt="translate" />
           </SelectTrigger>
           <SelectContent>

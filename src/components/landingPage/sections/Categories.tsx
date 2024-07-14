@@ -68,9 +68,9 @@ const Categories = () => {
         }
         language={language}
       />
-      <button className="bg-primary w-[222px] h-[62px] rounded-full text-[20px] font-semibold text-myblack mt-3">
+      {/* <button className="bg-primary w-[222px] h-[62px] rounded-full text-[20px] font-semibold text-myblack mt-3">
         {t("categories.btn_text")}
-      </button>
+      </button> */}
     </section>
   );
 };
