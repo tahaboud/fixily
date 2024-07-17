@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { logout } from "../../../state/actions/authActions";
 import { Button } from "../ui/button";
@@ -76,9 +76,9 @@ const Navbar = () => {
       className={`fixed top-0 left-0 w-full flex justify-between items-center text-4xl h-[100px] px-4 md:px-20 xl:px-40 bg-secondary z-20 ${
         isScrolled && "shadow-lg bg-white"
       }`}>
-      <div>
+      <Link to="/" className="block">
         <img src="/src/assets/fixily.png" alt="" className="w-[120px]" />
-      </div>
+      </Link>
       <div className="gap-4 items-center justify-end w-full max-w-[70%] hidden md:flex">
         <Select onValueChange={handleLanguageChange}>
           <SelectTrigger className="text-myblack font-bold w-fit bg-transparent">

@@ -10,7 +10,7 @@ import QaSection from "../components/landingPage/sections/QaSection";
 
 const LandingPage = () => {
   return (
-    <div className="">
+    <div>
       <Navbar />
       <HeroSection />
       <Categories />
