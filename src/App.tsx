@@ -33,8 +33,8 @@ import AdminRoutes from "./utils/AdminRoutes";
 import ArtisanRoutes from "./utils/ArtisanRoutes";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import Policy from "./pages/Policy";
-import { Scroll } from "lucide-react";
 import ScrollToTop from "./components/ScrollToTop";
+import DataPolicy from "./pages/DataPolicy";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -106,6 +106,7 @@ function App() {
             </Route>
             <Route element={<LandingPage />} path="/" />
             <Route element={<Policy />} path="/policy" />
+            <Route element={<DataPolicy />} path="/mydata" />
 
             <Route element={<Login />} path="/login" />
             <Route element={<ClientLogin />} path="/login/client" />

@@ -1,5 +1,3 @@
-import { Separator } from "@radix-ui/react-dropdown-menu";
-
 import { Trans, useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -55,7 +53,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <Separator className="my-4 bg-lightblack h-[1px] rounded-full" />
+        <div className="h-[1px] w-full bg-slate-950"></div>
         <div className="w-full flex max-md:flex-col md:justify-center items-center gap-5 text-base  font-semibold text-lightblack">
           <Link to="/">{t("footer.copyright")}</Link>
           <Link to="/">{t("footer.droits")}</Link>
