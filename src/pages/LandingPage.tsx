@@ -1,7 +1,6 @@
 import HeroSection from "../components/landingPage/sections/HeroSection";
 import Navbar from "../components/landingPage/sections/Navbar";
 
-import ArticleSection from "../components/landingPage/sections/ArticleSection";
 import Categories from "../components/landingPage/sections/Categories";
 import EmploymentSection from "../components/landingPage/sections/EmploymentSection";
 import Footer from "../components/landingPage/sections/Footer";
@@ -17,7 +16,7 @@ const LandingPage = () => {
       <HowSection />
       <EmploymentSection />
       <QaSection />
-      <ArticleSection />
+      {/* <ArticleSection /> */}
       <Footer />
     </div>
   );
