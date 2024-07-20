@@ -34,6 +34,9 @@ import "./style.css";
 import AdminRoutes from "./utils/AdminRoutes";
 import ArtisanRoutes from "./utils/ArtisanRoutes";
 import PrivateRoutes from "./utils/PrivateRoutes";
+import Policy from "./pages/Policy";
+import ScrollToTop from "./components/ScrollToTop";
+import DataPolicy from "./pages/DataPolicy";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -80,13 +83,13 @@ function App() {
             setSnack((current) => {
               return { ...current, open: false };
             })
-          }
-        >
+          }>
           <Alert severity={snack.color} sx={{ width: "100%" }}>
             {snack.message}
           </Alert>
         </Snackbar>
         <Router>
+          <ScrollToTop />
           <Routes>
             <Route
               element={
@@ -94,8 +97,7 @@ function App() {
                   userDataFetchedFromToken={userDataFetchedFromToken}
                   isAuthenticated={isAuthenticated}
                 />
-              }
-            >
+              }>
               <Route element={<AdminRoutes data={data} />}>
                 <Route element={<Admin />} path="/admin" />
               </Route>
@@ -112,6 +114,9 @@ function App() {
               />
             </Route>
             <Route element={<LandingPage />} path="/" />
+            <Route element={<Policy />} path="/policy" />
+            <Route element={<DataPolicy />} path="/mydata" />
+
             <Route element={<Login />} path="/login" />
             <Route element={<ClientLogin />} path="/login/client" />
             <Route element={<AdminLogin />} path="/login/admin" />

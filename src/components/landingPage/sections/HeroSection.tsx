@@ -13,9 +13,9 @@ const HeroSection = () => {
 
   return (
     <section
-      className={`px-20 h-auto bg-secondary flex ${
+      className={`px-4 md:px-20 xl:px-40 h-screen bg-secondary flex ${
         language == "ar" ? "flex-row-reverse" : ""
-      } items-center justify-around font-lato w-full max-lg:flex-col max-lg:gap-7  max-lg:py-4 max-md:gap-5 max-md:pt-6`}
+      } items-center justify-between font-lato w-full max-lg:flex-col max-lg:gap-7  max-lg:py-4 max-md:gap-5 max-lg:pt-10 pt-0`}
     >
       <div
         className={`flex flex-col justify-around gap-4 max-md:items-center  ${
@@ -39,7 +39,7 @@ const HeroSection = () => {
         <img
           src="/src/assets/hero_image.webp"
           alt=""
-          className="w-full h-auto max-w-[419px] max-h-[589px] md:max-w-[300px]"
+          className="w-full h-auto max-w-[419px] max-h-[589px] md:max-w-[500px]"
         />
       </div>
     </section>

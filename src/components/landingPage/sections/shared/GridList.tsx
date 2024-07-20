@@ -29,8 +29,7 @@ const GridList = ({ categories, language }: CategoryProps) => {
                 category: String(category.id),
               }).toString(),
             })
-          }
-        >
+          }>
           <img
             src={
               import.meta.env.VITE_REACT_APP_IMAGE_URL + category.image ||
@@ -41,7 +40,7 @@ const GridList = ({ categories, language }: CategoryProps) => {
                 ? category.image
                 : category.name_en
             }
-            className="object-cover"
+            className="h-[200px] rounded-lg hover:scale-110 transition-all"
           />
           <h3 className="text-[24px] font-semibold text-myblack text-center">
             {language.substring(0, 2) === "ar"

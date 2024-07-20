@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { logout } from "../../../state/actions/authActions";
 import { Button } from "../ui/button";
@@ -38,6 +38,20 @@ const Navbar = () => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const lng = navigator.language;
@@ -58,22 +72,18 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full flex justify-between items-center text-4xl h-[100px] px-4 xl:px-20 bg-secondary">
-      <div>
-        <img
-          src="/src/assets/landing_logo.webp"
-          alt=""
-          className="w-[120px] h-[60px]"
-        />
-      </div>
-      <div className="flex gap-2 items-center justify-evenly w-full max-w-[70%] hidden md:flex">
+    <nav
+      className={`fixed top-0 left-0 w-full flex justify-between items-center text-4xl h-[100px] px-4 md:px-20 xl:px-40 bg-secondary z-20 ${
+        isScrolled && "shadow-lg bg-white"
+      }`}
+    >
+      <Link to="/" className="block">
+        <img src="/src/assets/fixily.webp" alt="" className="w-[120px]" />
+      </Link>
+      <div className="gap-4 items-center justify-end w-full max-w-[70%] hidden md:flex">
         <Select onValueChange={handleLanguageChange}>
-          <SelectTrigger className="text-myblack font-bold w-[180px] bg-secondary">
+          <SelectTrigger className="text-myblack font-bold w-fit bg-transparent">
             <img src="/src/assets/translate.webp" alt="translate" />
-            <SelectValue
-              placeholder={t("navbar.language.language")}
-              className="hidden"
-            />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -94,59 +104,6 @@ const Navbar = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger className="text-myblack text-base font-medium flex items-center gap-2">
-            <div
-              className={`p-1 flex items-center gap-1 ${
-                language === "ar" ? "flex-row-reverse" : ""
-              }`}
-            >
-              {t("navbar.services")}
-              <img src="/src/assets/arrow_down.webp" alt="arrow down" />
-            </div>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="mt-3">
-            <DropdownMenuLabel
-              className={`${language === "ar" ? "text-right" : ""} w-full`}
-            >
-              {t("navbar.services")}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem className="w-full">
-              <div
-                className={`${language === "ar" ? "text-right" : ""} w-full`}
-              >
-                وفي
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="w-full">
-              <div
-                className={`${language === "ar" ? "text-right" : ""} w-full`}
-              >
-                Billing
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="w-full">
-              <div
-                className={`${language === "ar" ? "text-right" : ""} w-full`}
-              >
-                Team
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="w-full">
-              <div
-                className={`${language === "ar" ? "text-right" : ""} w-full`}
-              >
-                Subscription
-              </div>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <Button variant="link" className="text-myblack">
-          {t("navbar.mesdemandes")}
-        </Button>
 
         {isAuthenticated ? (
           <div className="flex items-center gap-3">
