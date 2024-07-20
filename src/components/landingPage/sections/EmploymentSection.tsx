@@ -20,13 +20,13 @@ const EmploymentSection = () => {
     >
       <div className="flex max-xl:flex-col max-xl:gap-4 gap-5 items-center max-md:w-full max-md:px-5">
         <img
-          src="/src/assets/workers.png"
+          src="/src/assets/workers.webp"
           alt="workers"
           className="object-cover h-[363px] w-[345px] "
         />
         <div className="relative max-md:bg-myblue max-md:rounded-2xl max-md:py-2 ">
           <img
-            src="/src/assets/shape.png"
+            src="/src/assets/shape.webp"
             alt="shape"
             className="max-md:hidden w-[767px] h-auto max-md:w-[300px] "
           />

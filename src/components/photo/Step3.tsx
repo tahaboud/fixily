@@ -1,8 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import downloadAppImage from "../../assets/downloadApp.png";
-import downloadOnAppStoreImage from "../../assets/downloadOnAppStore.png";
-import downloadOnGooglePlayImage from "../../assets/downloadOnGooglePlay.png";
+import downloadAppImage from "../../assets/downloadApp.webp";
+import downloadOnAppStoreImage from "../../assets/downloadOnAppStore.webp";
+import downloadOnGooglePlayImage from "../../assets/downloadOnGooglePlay.webp";
 import { useAppSelector } from "../../hooks";
 
 const Step3 = () => {

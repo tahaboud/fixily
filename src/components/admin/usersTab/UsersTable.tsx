@@ -1,4 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
+import SearchIcon from "@mui/icons-material/Search";
 import {
   Box,
   Button,
@@ -8,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +21,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { adminGetUsers } from "../../../state/actions/adminAction";
 import { User } from "../../../types";
+import { isStringIncluded } from "../utils";
 import EditUserPanel from "./EditUserPanel";
 
 const UsersTable = ({
@@ -28,6 +31,8 @@ const UsersTable = ({
   setSelectedUser,
   selectedUser,
   setScreenToShow,
+  selectedUserType,
+  setSelectedUserType,
 }: {
   setNumOfClients: React.Dispatch<React.SetStateAction<number>>;
   setNumOfArtisans: React.Dispatch<React.SetStateAction<number>>;
@@ -37,66 +42,114 @@ const UsersTable = ({
   setScreenToShow: React.Dispatch<
     React.SetStateAction<"table" | "editing" | "creating">
   >;
+  selectedUserType: "clients" | "artisans" | "admins";
+  setSelectedUserType: React.Dispatch<
+    React.SetStateAction<"clients" | "artisans" | "admins">
+  >;
 }) => {
   const dispatch = useAppDispatch();
+
   const { t } = useTranslation();
-  const [selectedUserType, setSelectedUserType] = useState<
-    "clients" | "artisans" | "admins"
-  >("clients");
   const { token, data: currentUser } = useAppSelector((state) => state.auth);
-  const { data } = useAppSelector((state) => state.admin);
-  const [users, setUsers] = useState<Array<User>>([]);
+  const { users: serverUsers } = useAppSelector((state) => state.admin);
+
+  const [artisans, setArtisans] = useState<Array<User>>([]);
+  const [clients, setClients] = useState<Array<User>>([]);
+  const [admins, setAdmins] = useState<Array<User>>([]);
+  const [queriedUsers, setQueriedUsers] = useState<Array<User>>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+
   useEffect(() => {
     if (token) {
       dispatch(adminGetUsers({ token }));
     }
   }, [dispatch, token]);
+
   useEffect(() => {
-    if (data) {
-      const localAdmins: Array<User> = [];
-      const localClients: Array<User> = [];
-      const localArtisans: Array<User> = [];
-      let numOfJoinedToday = 0;
-      const today = new Date();
-      data.map((user) => {
-        const userJoinedOn = new Date(user.created_at);
-        if (userJoinedOn === today) {
-          numOfJoinedToday += 1;
-        }
-        if (user.is_admin) {
-          localAdmins.push(user);
-        } else if (user.is_artisan) {
-          localArtisans.push(user);
-        } else {
-          localClients.push(user);
-        }
-      });
-      if (selectedUserType === "admins") {
-        setUsers(localAdmins);
-      } else if (selectedUserType === "artisans") {
-        setUsers(localArtisans);
-      } else {
-        setUsers(localClients);
-      }
-      setNumOfArtisans(localArtisans.length);
-      setNumOfClients(localClients.length);
-      setNumOfJoinedToday(numOfJoinedToday);
+    if (serverUsers) {
+      setAdmins(serverUsers.filter((user) => user.is_admin));
+      setArtisans(
+        serverUsers.filter((user) => user.is_artisan && !user.is_admin)
+      );
+      setClients(
+        serverUsers.filter((user) => !user.is_artisan && !user.is_admin)
+      );
     }
-  }, [
-    data,
-    selectedUserType,
-    setNumOfArtisans,
-    setNumOfClients,
-    setNumOfJoinedToday,
-  ]);
+  }, [serverUsers]);
+
+  useEffect(() => {
+    if (selectedUserType === "admins") {
+      setQueriedUsers(admins);
+      setSearchQuery("");
+    } else if (selectedUserType === "clients") {
+      setQueriedUsers(clients);
+      setSearchQuery("");
+    } else {
+      setQueriedUsers(artisans);
+      setSearchQuery("");
+    }
+  }, [selectedUserType, admins, clients, artisans]);
+
+  useEffect(() => {
+    if (serverUsers) {
+      const today = new Date();
+      setNumOfArtisans(
+        serverUsers.filter((user) => user.is_artisan && !user.is_admin).length
+      );
+      setNumOfClients(
+        serverUsers.filter((user) => !user.is_artisan && !user.is_admin).length
+      );
+      setNumOfJoinedToday(
+        serverUsers.filter(
+          (user) =>
+            Math.round(
+              (today.getTime() - new Date(user.created_at).getTime()) /
+                (1000 * 60 * 60 * 24)
+            ) === 0
+        ).length
+      );
+    }
+  }, [serverUsers, setNumOfArtisans, setNumOfClients, setNumOfJoinedToday]);
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      if (selectedUserType === "admins") {
+        setQueriedUsers(admins);
+      } else if (selectedUserType === "clients") {
+        setQueriedUsers(clients);
+      } else {
+        setQueriedUsers(artisans);
+      }
+    } else {
+      if (selectedUserType === "admins") {
+        setQueriedUsers(
+          admins.filter((user) =>
+            isStringIncluded(user, searchQuery.split(" "))
+          )
+        );
+      } else if (selectedUserType === "clients") {
+        setQueriedUsers(
+          clients.filter((user) =>
+            isStringIncluded(user, searchQuery.split(" "))
+          )
+        );
+      } else {
+        setQueriedUsers(
+          artisans.filter((user) =>
+            isStringIncluded(user, searchQuery.split(" "))
+          )
+        );
+      }
+    }
+  }, [searchQuery, admins, clients, artisans, selectedUserType]);
+
   return (
-    <Box sx={{ display: "flex", gap: "1em" }}>
+    <Box sx={{ display: "flex", gap: "1em", flex: 1, maxHeight: "80%" }}>
       <Box
         sx={{
           backgroundColor: "#FFFFFF",
           borderRadius: "16px",
           boxShadow: "0px 4px 8px 0px #00000017",
-          height: "70vh",
           flex: 3,
         }}
       >
@@ -106,6 +159,7 @@ const UsersTable = ({
             alignItems: "center",
             padding: "1em",
             gap: "1em",
+            height: "5em",
           }}
         >
           <Button
@@ -191,7 +245,16 @@ const UsersTable = ({
               {t("Admins")}
             </Button>
           )}
-          <Box sx={{ flex: 1 }} />
+          <TextField
+            InputProps={{
+              startAdornment: <SearchIcon />,
+              sx: { borderRadius: "24px" },
+            }}
+            sx={{ backgroundColor: "#ECF0F180", borderRadius: "24px", flex: 1 }}
+            placeholder={t("search...")}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
           {currentUser?.is_superuser && selectedUserType === "admins" && (
             <Button
               startIcon={<AddIcon />}
@@ -202,8 +265,11 @@ const UsersTable = ({
             </Button>
           )}
         </Box>
-        <TableContainer sx={{ height: "100%", minWidth: "50em" }}>
-          <Table>
+        <TableContainer
+          sx={{ minWidth: "50em", maxHeight: "calc(100% - 5em)" }}
+          className="scrollbar"
+        >
+          <Table stickyHeader>
             <TableHead>
               <TableRow>
                 <TableCell align="center" sx={{ fontWeight: 600 }}>
@@ -233,6 +299,12 @@ const UsersTable = ({
                 <TableCell align="center" sx={{ fontWeight: 600 }}>
                   {t("Is Active")}
                 </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600 }}>
+                  {t("last_online")}
+                </TableCell>
+                <TableCell align="center" sx={{ fontWeight: 600 }}>
+                  {t("language")}
+                </TableCell>
                 {currentUser?.is_superuser && (
                   <TableCell align="center" sx={{ fontWeight: 600 }}>
                     {t("Is Admin")}
@@ -241,7 +313,7 @@ const UsersTable = ({
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
+              {queriedUsers.map((user) => (
                 <TableRow
                   key={user.id}
                   sx={{
@@ -294,6 +366,15 @@ const UsersTable = ({
                   </TableCell>
                   <TableCell align="center" sx={{ color: "#2C3E5080" }}>
                     {user.is_active ? t("Yes") : t("No")}
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "#2C3E5080" }}>
+                    {Intl.DateTimeFormat("en-US", {
+                      dateStyle: "short",
+                      timeStyle: "short",
+                    }).format(new Date(user.last_online))}
+                  </TableCell>
+                  <TableCell align="center" sx={{ color: "#2C3E5080" }}>
+                    {user.language}
                   </TableCell>
                   {currentUser?.is_superuser && (
                     <TableCell align="center" sx={{ color: "#2C3E5080" }}>

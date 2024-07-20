@@ -72,7 +72,11 @@ const EditUserPanel = ({
           width: "10em",
           height: "10em",
           borderRadius: "50%",
-          backgroundImage: `url(${selectedUser.picture})`,
+          backgroundImage: `url(${import.meta.env.VITE_REACT_APP_IMAGE_URL}${
+            selectedUser.picture
+          })`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
           backgroundColor: "#000000",
         }}
       />

@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getSubCategories } from "../../state/actions/servicesAction";
 import { SubCategory } from "../../types";
@@ -28,6 +29,7 @@ const SubCategoryStep = ({
 }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const { subCategories } = useAppSelector((state) => state.services);
 
@@ -95,7 +97,7 @@ const SubCategoryStep = ({
             borderRadius: "8px",
             "&:hover": { backgroundColor: "#283849" },
           }}
-          onClick={() => setStep(0)}
+          onClick={() => navigate("/")}
         >
           <KeyboardArrowLeftIcon sx={{ color: "#FFFFFF" }} />
         </IconButton>

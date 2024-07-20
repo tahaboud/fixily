@@ -47,6 +47,8 @@ export interface User {
   created_at: string;
   availability: Array<Availability>;
   review: string;
+  last_online: string;
+  language: "fr" | "ar";
 }
 
 export interface UserResponse {
@@ -116,6 +118,8 @@ export interface Job {
   images: Array<JobImage>;
   rooms_count: number;
   review: JobReview | null;
+  created_at: string;
+  done_at: string | null;
 }
 
 export interface PreviousJob {

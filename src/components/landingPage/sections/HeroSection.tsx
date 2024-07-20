@@ -31,13 +31,13 @@ const HeroSection = () => {
             language == "ar" ? "justify-end" : ""
           } gap-5 max-sm:flex-col`}
         >
-          <img src="/src/assets/apple.png" alt="" />
-          <img src="/src/assets/google.png" alt="" />
+          <img src="/src/assets/apple.webp" alt="" />
+          <img src="/src/assets/google.webp" alt="" />
         </div>
       </div>
       <div>
         <img
-          src="/src/assets/hero_image.png"
+          src="/src/assets/hero_image.webp"
           alt=""
           className="w-full h-auto max-w-[419px] max-h-[589px] md:max-w-[300px]"
         />

@@ -144,6 +144,11 @@ interface AddJobImagesAction {
   payload: null;
 }
 
+interface SetUserDataFetchedFromTokenTrueAction {
+  type: ActionEnums.SET_USER_DATA_FETCHED_FROM_TOKEN_TRUE;
+  payload: null;
+}
+
 interface DeleteJobAction {
   type: ActionEnums.DELETE_JOB_SUCCESS;
   payload: null;
@@ -157,6 +162,11 @@ interface DeletePreviousWorkPhotoAction {
 interface AdminUpdateCategoryAction {
   type: ActionEnums.ADMIN_UPDATE_CATEGORY_SUCCESS;
   payload: null;
+}
+
+interface AdminGetJobsAction {
+  type: ActionEnums.ADMIN_GET_JOBS_SUCCESS;
+  payload: Array<Job>;
 }
 
 interface AdminCreateCategoryAction {
@@ -243,6 +253,7 @@ interface ErrorAction {
     | ActionEnums.ADD_JOB_IMAGES_FAIL
     | ActionEnums.ADMIN_GET_PAYMENT_RECEIPT_FAIL
     | ActionEnums.ADMIN_UPDATE_PAYMENT_RECEIPT_FAIL
+    | ActionEnums.ADMIN_GET_JOBS_FAIL
     | ActionEnums.RESET_PASSWORD_OTP_FAIL;
   payload: { type: string; errors: Array<ErrorResponse> } | null;
 }
@@ -281,6 +292,8 @@ export type ActionType =
   | DeleteJobAction
   | AdminGetPaymentReceiptsAction
   | AdminUpdatePaymentReceiptsAction
+  | AdminGetJobsAction
+  | SetUserDataFetchedFromTokenTrueAction
   | IsLoadingAction
   | ErrorAction
   | CleanStateAction;

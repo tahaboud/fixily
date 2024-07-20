@@ -3,7 +3,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import logoImage from "../../assets/logo.png";
+import logoImage from "../../assets/logo.webp";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { registerClient } from "../../state/actions/authActions";
 import { validateClientSignUp } from "../../validators/clientSignUp";

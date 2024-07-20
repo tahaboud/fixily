@@ -45,6 +45,8 @@ export interface AdminState {
   details: Detail | null;
   errors: { type: string; errors: Array<ErrorResponse> } | null;
   paymentReceipts: Array<PaymentReceipt> | null;
+  jobs: Array<Job> | null;
+  users: Array<User> | null;
 }
 
 export interface ServicesState {

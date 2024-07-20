@@ -4,8 +4,8 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import clientImage from "../../assets/client.png";
-import logoImage from "../../assets/logo.png";
+import clientImage from "../../assets/client.webp";
+import logoImage from "../../assets/logo.webp";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   checkResetPasswordOTP,

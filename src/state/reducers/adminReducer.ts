@@ -8,6 +8,8 @@ const initialState: AdminState = {
   details: null,
   errors: null,
   paymentReceipts: null,
+  jobs: null,
+  users: null,
 };
 
 export default (
@@ -22,7 +24,7 @@ export default (
       return {
         ...state,
         adminIsLoading: false,
-        data: payload,
+        users: payload,
         errors: null,
       };
 
@@ -32,6 +34,14 @@ export default (
         adminIsLoading: false,
         errors: null,
         paymentReceipts: payload,
+      };
+
+    case ActionEnums.ADMIN_GET_JOBS_SUCCESS:
+      return {
+        ...state,
+        adminIsLoading: false,
+        errors: null,
+        jobs: payload,
       };
 
     case ActionEnums.ADMIN_UPDATE_CATEGORY_SUCCESS:
@@ -47,6 +57,7 @@ export default (
     case ActionEnums.ADMIN_CREATE_ADMIN_FAIL:
     case ActionEnums.ADMIN_GET_PAYMENT_RECEIPT_FAIL:
     case ActionEnums.ADMIN_UPDATE_PAYMENT_RECEIPT_FAIL:
+    case ActionEnums.ADMIN_GET_JOBS_FAIL:
       return {
         ...state,
         adminIsLoading: false,

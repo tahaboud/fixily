@@ -7,7 +7,15 @@ import CreateAdminComponent from "./usersTab/CreateAdminComponent";
 import EditUserComponent from "./usersTab/EditUserComponent";
 import UsersTable from "./usersTab/UsersTable";
 
-const Users = () => {
+const Users = ({
+  setSelectedUserType,
+  selectedUserType,
+}: {
+  selectedUserType: "clients" | "artisans" | "admins";
+  setSelectedUserType: React.Dispatch<
+    React.SetStateAction<"clients" | "artisans" | "admins">
+  >;
+}) => {
   const [numOfClients, setNumOfClients] = useState(0);
   const [numOfArtisans, setNumOfArtisans] = useState(0);
   const [numOfJoinedToday, setNumOfJoinedToday] = useState(0);
@@ -15,32 +23,34 @@ const Users = () => {
   const [screenToShow, setScreenToShow] = useState<
     "table" | "editing" | "creating"
   >("table");
+
   const { data: currentUser } = useAppSelector((state) => state.auth);
+
   return (
     <Box
       sx={{
-        margin: "1em",
         display: "flex",
         flexDirection: "column",
-        gap: "2em",
+        gap: "1em",
+        height: "100%",
       }}
     >
+      <Cards
+        numOfClients={numOfClients}
+        numOfArtisans={numOfArtisans}
+        numOfJoinedToday={numOfJoinedToday}
+      />
       {screenToShow === "table" ? (
-        <>
-          <Cards
-            numOfClients={numOfClients}
-            numOfArtisans={numOfArtisans}
-            numOfJoinedToday={numOfJoinedToday}
-          />
-          <UsersTable
-            setScreenToShow={setScreenToShow}
-            selectedUser={selectedUser}
-            setSelectedUser={setSelectedUser}
-            setNumOfClients={setNumOfClients}
-            setNumOfArtisans={setNumOfArtisans}
-            setNumOfJoinedToday={setNumOfJoinedToday}
-          />
-        </>
+        <UsersTable
+          setScreenToShow={setScreenToShow}
+          selectedUser={selectedUser}
+          setSelectedUser={setSelectedUser}
+          setNumOfClients={setNumOfClients}
+          setNumOfArtisans={setNumOfArtisans}
+          setNumOfJoinedToday={setNumOfJoinedToday}
+          setSelectedUserType={setSelectedUserType}
+          selectedUserType={selectedUserType}
+        />
       ) : screenToShow === "creating" ? (
         <CreateAdminComponent setScreenToShow={setScreenToShow} />
       ) : (

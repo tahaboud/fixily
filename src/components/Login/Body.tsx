@@ -2,8 +2,8 @@ import { Box, Typography } from "@mui/material";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import artisanImage from "../../assets/artisan.png";
-import clientImage from "../../assets/client.png";
+import artisanImage from "../../assets/artisan.webp";
+import clientImage from "../../assets/client.webp";
 import { useAppSelector } from "../../hooks";
 
 const Body = () => {

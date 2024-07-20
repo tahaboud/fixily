@@ -1,13 +1,13 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { FacebookIcon, GoogleIcon } from "../../assets/Icons";
-import clientImage from "../../assets/client.png";
+import clientImage from "../../assets/client.webp";
 
 import EmailIcon from "@mui/icons-material/Email";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import logoImage from "../../assets/logo.png";
+import logoImage from "../../assets/logo.webp";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   clientLogin,
@@ -23,12 +23,14 @@ const ClientLogin = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+
   const {
     isAuthenticated,
     detail,
     errors: serverErrors,
     userIsLoading,
   } = useAppSelector((state) => state.auth);
+
   const [waitingForStateCode, setWaitingForStateCode] = useState(false);
   const [loginProvider, setLoginProvider] = useState<
     "facebook" | "google" | null
@@ -38,6 +40,7 @@ const ClientLogin = () => {
   const [errors, setErrors] = useState<ClientLoginValidationErrors | null>(
     null
   );
+
   const handleSocialLogin = ({
     provider,
   }: {
@@ -47,14 +50,17 @@ const ClientLogin = () => {
     setLoginProvider(provider);
     dispatch(requestStateCode({ provider }));
   };
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/account");
     }
     if (waitingForStateCode && detail && detail.state_code && loginProvider) {
-      location.href = generateSocialLoginUrl(loginProvider, detail.state_code);
+      const url = generateSocialLoginUrl(loginProvider, detail.state_code);
+      console.log(url);
     }
   }, [detail, isAuthenticated, navigate, loginProvider, waitingForStateCode]);
+
   useEffect(() => {
     const code = searchParams.get("code");
     const state = searchParams.get("state");
@@ -64,6 +70,7 @@ const ClientLogin = () => {
     }
     setErrors(null);
   }, [dispatch, searchParams, setSearchParams]);
+
   const handleEmailLogin = () => {
     const { isValid, validationErrors } = validateClientLogin({
       email,
@@ -75,6 +82,7 @@ const ClientLogin = () => {
       setErrors(validationErrors);
     }
   };
+
   useEffect(() => {
     if (serverErrors && serverErrors.type === "validation_error") {
       setErrors({
@@ -83,6 +91,7 @@ const ClientLogin = () => {
       });
     }
   }, [serverErrors]);
+
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box

@@ -38,7 +38,7 @@ const Explore = ({ onSearchCategories }: ExploreProps) => {
               language == "ar" ? "left-2" : "right-2"
             }  hover:cursor-pointer`}
           >
-            <img src="/src/assets/loop.png" alt="" />
+            <img src="/src/assets/loop.webp" alt="" />
           </div>
         </div>
       </div>

@@ -61,7 +61,7 @@ const Navbar = () => {
     <nav className="w-full flex justify-between items-center text-4xl h-[100px] px-4 xl:px-20 bg-secondary">
       <div>
         <img
-          src="/src/assets/landing_logo.png"
+          src="/src/assets/landing_logo.webp"
           alt=""
           className="w-[120px] h-[60px]"
         />
@@ -69,7 +69,7 @@ const Navbar = () => {
       <div className="flex gap-2 items-center justify-evenly w-full max-w-[70%] hidden md:flex">
         <Select onValueChange={handleLanguageChange}>
           <SelectTrigger className="text-myblack font-bold w-[180px] bg-secondary">
-            <img src="/src/assets/translate.png" alt="translate" />
+            <img src="/src/assets/translate.webp" alt="translate" />
             <SelectValue
               placeholder={t("navbar.language.language")}
               className="hidden"
@@ -103,7 +103,7 @@ const Navbar = () => {
               }`}
             >
               {t("navbar.services")}
-              <img src="/src/assets/arrow_down.png" alt="arrow down" />
+              <img src="/src/assets/arrow_down.webp" alt="arrow down" />
             </div>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mt-3">
@@ -184,7 +184,7 @@ const Navbar = () => {
         <Sheet>
           <SheetTrigger asChild>
             <Button className="border-none bg-transparent">
-              <img src="/src/assets/burger_menu.png" alt="burger menu" />
+              <img src="/src/assets/burger_menu.webp" alt="burger menu" />
             </Button>
           </SheetTrigger>
           <SheetContent>
@@ -194,7 +194,7 @@ const Navbar = () => {
             <div className="flex flex-col gap-9 p-4">
               <Select onValueChange={handleLanguageChange}>
                 <SelectTrigger className="text-myblack font-bold w-full bg-secondary">
-                  <img src="/src/assets/translate.png" alt="translate" />
+                  <img src="/src/assets/translate.webp" alt="translate" />
                   <SelectValue
                     placeholder={t("navbar.language.language")}
                     className="hidden"
@@ -234,7 +234,7 @@ const Navbar = () => {
                     <div className="flex justify-center items-center w-full">
                       {t("navbar.services")}
                     </div>
-                    <img src="/src/assets/arrow_down.png" alt="arrow down" />
+                    <img src="/src/assets/arrow_down.webp" alt="arrow down" />
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="mt-3">

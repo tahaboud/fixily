@@ -5,7 +5,7 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import logoImage from "../../assets/logo.png";
+import logoImage from "../../assets/logo.webp";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { clientLogin } from "../../state/actions/authActions";
 import { validateClientLogin } from "../../validators/clientLogin";

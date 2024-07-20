@@ -16,7 +16,7 @@ const Footer = () => {
         <div className="flex max-md:flex-col lg:gap-[200px] gap-[80px] ">
           <div className="flex flex-col gap-8 ">
             <img
-              src="/src/assets/fixily.png"
+              src="/src/assets/fixily.webp"
               alt="logo"
               className="w-[172px] h-[64px]"
             />
@@ -24,10 +24,10 @@ const Footer = () => {
               {<Trans i18nKey="footer.txt_below_logo" />}
             </p>
             <div className="flex gap-2 pl-[20px] pt-2">
-              <img src="/src/assets/facebook.png" alt="" />
-              <img src="/src/assets/insta.png" alt="" />
-              <img src="/src/assets/linkedIn.png" alt="" />
-              <img src="/src/assets/youtube.png" alt="" />
+              <img src="/src/assets/facebook.webp" alt="" />
+              <img src="/src/assets/insta.webp" alt="" />
+              <img src="/src/assets/linkedIn.webp" alt="" />
+              <img src="/src/assets/youtube.webp" alt="" />
             </div>
           </div>
           <div className="flex flex-col gap-4">
@@ -42,12 +42,12 @@ const Footer = () => {
             </p>
             <div className="flex max-xl:flex-col  xl:items-center w-full gap-4 pt-[25px]">
               <img
-                src="/src/assets/apple.png"
+                src="/src/assets/apple.webp"
                 alt="apple"
                 className="w-[227px]"
               />
               <img
-                src="/src/assets/google.png"
+                src="/src/assets/google.webp"
                 alt="ggle"
                 className="w-[227px]"
               />

@@ -14,7 +14,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import logoImage from "../../assets/logo.png";
+import logoImage from "../../assets/logo.webp";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { updateUser } from "../../state/actions/authActions";
 import { prepareAvailability } from "../utils";

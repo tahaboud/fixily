@@ -24,8 +24,12 @@ export default (
 
     case ActionEnums.CLEAN_AUTH_STATE:
       return { ...state, userIsLoading: false, detail: null };
+
     case ActionEnums.SWITCH_TO_CLIENT:
       return { ...state, userIsLoading: false, isArtisan: !state.isArtisan };
+
+    case ActionEnums.SET_USER_DATA_FETCHED_FROM_TOKEN_TRUE:
+      return { ...state, userIsLoading: false, userDataFetchedFromToken: true };
 
     case ActionEnums.SIGN_IN_SUCCESS:
     case ActionEnums.SIGN_UP_SUCCESS:
@@ -53,6 +57,7 @@ export default (
         userDataFetchedFromToken: true,
         isArtisan: payload.is_artisan,
       };
+
     case ActionEnums.UPDATE_USER_SUCCESS:
       return {
         ...state,

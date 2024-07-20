@@ -8,13 +8,11 @@ export const generateSocialLoginUrl = (
   if (provider === "facebook") {
     return `${import.meta.env.VITE_REACT_APP_FACEBOOK_LOGIN_URL}?client_id=${
       import.meta.env.VITE_REACT_APP_FACEBOOK_CLIENT_ID
-    }&redirect_uri=${location.href}&state=${stateCode}`;
+    }&scope=email,public_profile&redirect_uri=https://fixily.net/login/client/&state=${stateCode}`;
   } else {
     return `${import.meta.env.VITE_REACT_APP_GOOGLE_LOGIN_URL}&client_id=${
       import.meta.env.VITE_REACT_APP_GOOGLE_CLIENT_ID
-    }&scope=openid email profile&redirect_uri=${
-      location.href
-    }&state=${stateCode}`;
+    }&scope=openid email profile&redirect_uri=${"https://fixily.net/login/client/"}&state=${stateCode}`;
   }
 };
 

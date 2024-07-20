@@ -499,3 +499,33 @@ export const adminUpdatePaymentReceipt =
         });
       });
   };
+
+export const adminGetJobs =
+  ({ token }: { token: string }) =>
+  (dispatch: AppDispatch) => {
+    dispatch({ type: ActionEnums.ADMIN_IS_LOADING });
+
+    const config: AxiosRequestConfig = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Token ${token}`,
+      },
+    };
+
+    axios
+      .get(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/services/admin/jobs/`,
+        config
+      )
+      .then((res) => {
+        dispatch({
+          type: ActionEnums.ADMIN_GET_JOBS_SUCCESS,
+          payload: res.data,
+        });
+      })
+      .catch(() => {
+        dispatch({
+          type: ActionEnums.ADMIN_GET_JOBS_FAIL,
+        });
+      });
+  };

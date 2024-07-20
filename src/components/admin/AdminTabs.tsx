@@ -37,14 +37,14 @@ const AdminTabs = ({
         value={tabNumber}
         onChange={handleChangeTab}
         TabIndicatorProps={{ sx: { display: "none" } }}
-        sx={{ width: "100%" }}
+        sx={{ width: "100%", "& .MuiTabs-flexContainer": { gap: "1.2em" } }}
       >
         <Tab
           icon={
             tabNumber === 0 ? (
-              <AdminPanelActiveTab1Icon />
+              <AdminPanelActiveTab1Icon sx={{ fontSize: "2.5rem" }} />
             ) : (
-              <AdminPanelTab1Icon />
+              <AdminPanelTab1Icon sx={{ fontSize: "2.5rem" }} />
             )
           }
           value={0}
@@ -52,9 +52,9 @@ const AdminTabs = ({
         <Tab
           icon={
             tabNumber === 1 ? (
-              <AdminPanelActiveTab2Icon />
+              <AdminPanelActiveTab2Icon sx={{ fontSize: "2.5rem" }} />
             ) : (
-              <AdminPanelTab2Icon />
+              <AdminPanelTab2Icon sx={{ fontSize: "2.5rem" }} />
             )
           }
           value={1}
@@ -62,9 +62,9 @@ const AdminTabs = ({
         <Tab
           icon={
             tabNumber === 2 ? (
-              <AdminPanelActiveTab3Icon />
+              <AdminPanelActiveTab3Icon sx={{ fontSize: "2.5rem" }} />
             ) : (
-              <AdminPanelTab3Icon />
+              <AdminPanelTab3Icon sx={{ fontSize: "2.5rem" }} />
             )
           }
           value={2}
@@ -72,9 +72,9 @@ const AdminTabs = ({
         <Tab
           icon={
             tabNumber === 3 ? (
-              <AdminPanelActiveTab4Icon />
+              <AdminPanelActiveTab4Icon sx={{ fontSize: "2.5rem" }} />
             ) : (
-              <AdminPanelTab4Icon />
+              <AdminPanelTab4Icon sx={{ fontSize: "2.5rem" }} />
             )
           }
           value={3}
@@ -82,9 +82,9 @@ const AdminTabs = ({
         <Tab
           icon={
             tabNumber === 4 ? (
-              <AdminPanelActiveTab5Icon />
+              <AdminPanelActiveTab5Icon sx={{ fontSize: "2.5rem" }} />
             ) : (
-              <AdminPanelTab5Icon />
+              <AdminPanelTab5Icon sx={{ fontSize: "2.5rem" }} />
             )
           }
           value={4}
@@ -92,9 +92,9 @@ const AdminTabs = ({
         <Tab
           icon={
             tabNumber === 5 ? (
-              <AdminPanelActiveTab6Icon />
+              <AdminPanelActiveTab6Icon sx={{ fontSize: "2.5rem" }} />
             ) : (
-              <AdminPanelTab6Icon />
+              <AdminPanelTab6Icon sx={{ fontSize: "2.5rem" }} />
             )
           }
           value={5}

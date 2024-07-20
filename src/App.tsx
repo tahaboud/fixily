@@ -11,6 +11,7 @@ import "./App.css";
 import { SnackbarContext } from "./components/common/SnackbarContext";
 import { useAppDispatch, useAppSelector } from "./hooks";
 import Admin from "./pages/Admin";
+import AdminLogin from "./pages/AdminLogin";
 import ArtisanAccount from "./pages/ArtisanAccount";
 import ArtisanAvailability from "./pages/ArtisanAvailability";
 import ArtisanForgotPassword from "./pages/ArtisanForgotPassword";
@@ -28,6 +29,7 @@ import Photo from "./pages/Photo";
 import SubCategories from "./pages/SubCategories";
 import Wilayas from "./pages/Wilayas";
 import { getUser } from "./state/actions/authActions";
+import { ActionEnums } from "./state/types/actionEnums";
 import "./style.css";
 import AdminRoutes from "./utils/AdminRoutes";
 import ArtisanRoutes from "./utils/ArtisanRoutes";
@@ -35,8 +37,10 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {
   const dispatch = useAppDispatch();
+
   const { isAuthenticated, data, userDataFetchedFromToken, isArtisan } =
     useAppSelector((state) => state.auth);
+
   const [snack, setSnack] = useState<{
     message: string;
     color: "success" | "info" | "warning" | "error";
@@ -47,16 +51,21 @@ function App() {
     color: "success",
     open: false,
   });
+
   const theme = createTheme({
     typography: {
       fontFamily: "Lato",
       fontWeightRegular: 500,
     },
   });
+
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       dispatch(getUser({ token }));
+    } else {
+      dispatch({ type: ActionEnums.SET_USER_DATA_FETCHED_FROM_TOKEN_TRUE });
     }
   }, [dispatch]);
 
@@ -105,6 +114,7 @@ function App() {
             <Route element={<LandingPage />} path="/" />
             <Route element={<Login />} path="/login" />
             <Route element={<ClientLogin />} path="/login/client" />
+            <Route element={<AdminLogin />} path="/login/admin" />
             <Route element={<ArtisanLogin />} path="/login/artisan" />
             <Route element={<ArtisanSignUp />} path="/register/artisan" />
             <Route element={<ClientSignUp />} path="/register/client" />

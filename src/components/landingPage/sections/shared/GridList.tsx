@@ -34,7 +34,7 @@ const GridList = ({ categories, language }: CategoryProps) => {
           <img
             src={
               import.meta.env.VITE_REACT_APP_IMAGE_URL + category.image ||
-              "/assets/images/renovation.png"
+              "/assets/images/renovation.webp"
             }
             alt={
               language.substring(0, 2) === "ar"

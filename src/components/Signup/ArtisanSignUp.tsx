@@ -10,8 +10,8 @@ import { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import InputMask from "react-input-mask";
 import { useNavigate } from "react-router-dom";
-import artisanImage from "../../assets/artisan.png";
-import logoImage from "../../assets/logo.png";
+import artisanImage from "../../assets/artisan.webp";
+import logoImage from "../../assets/logo.webp";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   registerArtisan,

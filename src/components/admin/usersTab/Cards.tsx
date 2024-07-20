@@ -17,13 +17,14 @@ const Cards = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <Box sx={{ display: "flex", alignItems: "center", gap: "1em" }}>
+    <Box
+      sx={{ display: "flex", alignItems: "center", gap: "1em", height: "20%" }}
+    >
       <Box
         sx={{
           backgroundColor: "#FFFFFF",
           boxShadow: "0px 4px 8px 0px #00000017",
           borderRadius: "16px",
-          height: "9em",
           flex: 1,
           display: "flex",
           padding: "1em",
@@ -43,7 +44,6 @@ const Cards = ({
           backgroundColor: "#FFFFFF",
           boxShadow: "0px 4px 8px 0px #00000017",
           borderRadius: "16px",
-          height: "9em",
           flex: 1,
           display: "flex",
           padding: "1em",
@@ -63,7 +63,6 @@ const Cards = ({
           backgroundColor: "#FFFFFF",
           boxShadow: "0px 4px 8px 0px #00000017",
           borderRadius: "16px",
-          height: "9em",
           flex: 1,
           display: "flex",
           padding: "1em",
