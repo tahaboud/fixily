@@ -1,7 +1,9 @@
+import LogoutIcon from "@mui/icons-material/Logout";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import {
   Badge,
   Box,
+  Button,
   IconButton,
   Menu,
   Tab,
@@ -22,6 +24,7 @@ import blackLogo from "../../assets/black-logo.svg";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import {
   getNotifications,
+  logout,
   markNotificationsAsRead,
 } from "../../state/actions/authActions";
 import { artisanGetJobs } from "../../state/actions/servicesAction";
@@ -45,6 +48,12 @@ const Body = () => {
   const [sidePanelOpen, setSidePanelOpen] = useState(true);
   const [selectedJob, setSelectedJob] = useState<Job | null>(null);
   const notificationMenuOpen = Boolean(anchorEl);
+
+  const handleSignOut = () => {
+    if (token) {
+      dispatch(logout({ token }));
+    }
+  };
 
   const getCurrentTabContent = () => {
     if (data) {
@@ -135,6 +144,7 @@ const Body = () => {
               }}
               sx={{
                 height: "100%",
+                position: "relative",
                 "& .MuiTabs-flexContainer": {
                   height: "100%",
                   justifyContent: "center",
@@ -187,6 +197,21 @@ const Body = () => {
                 value={2}
                 sx={{ textTransform: "none", fontSize: "1.1rem" }}
               />
+              <Button
+                startIcon={<LogoutIcon sx={{ height: "1em", width: "1em" }} />}
+                variant="text"
+                sx={{
+                  color: "#FC4848",
+                  position: "absolute",
+                  bottom: "5%",
+                  textTransform: "none",
+                  width: "100%",
+                  fontSize: "1rem",
+                }}
+                onClick={handleSignOut}
+              >
+                {t("signout")}
+              </Button>
             </Tabs>
           </Box>
         </Box>

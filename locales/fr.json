@@ -261,5 +261,6 @@
   "new_payment_receipt": "Un nouveau reçu de paiement a été soumis",
   "wilaya": "Wilaya",
   "communet": "Commune",
-  "client_email": "Email de client"
+  "client_email": "Email de client",
+  "signout": "Se déconecter"
 }
