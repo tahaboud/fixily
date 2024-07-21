@@ -99,7 +99,7 @@ function App() {
                 />
               }>
               <Route element={<AdminRoutes data={data} />}>
-                <Route element={<Admin />} path="/admin" />
+                <Route element={<Admin />} path="/panel-admin" />
               </Route>
               <Route element={<ArtisanRoutes data={data} />}>
                 <Route element={<Categories />} path="/categories" />

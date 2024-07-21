@@ -22,7 +22,7 @@ const AdminLogin = () => {
 
   useEffect(() => {
     if (isAuthenticated && data && data.is_admin) {
-      navigate("/admin");
+      navigate("/panel-admin");
     } else if (isAuthenticated && data && !data.is_admin) {
       navigate("/account");
     }
@@ -50,16 +50,14 @@ const AdminLogin = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-      }}
-    >
+      }}>
       <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: "1em",
           width: "20em",
-        }}
-      >
+        }}>
         <Box>
           <Typography>{t("email")}</Typography>
           <TextField
@@ -90,8 +88,7 @@ const AdminLogin = () => {
         <Button
           onClick={handleSignIn}
           variant="contained"
-          disabled={userIsLoading}
-        >
+          disabled={userIsLoading}>
           {t("login")}
         </Button>
       </Box>

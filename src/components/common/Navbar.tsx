@@ -23,8 +23,7 @@ const Navbar = () => {
             justifyContent: "space-between",
             alignItems: "center",
             height: "4em",
-          }}
-        >
+          }}>
           <Typography>Logo</Typography>
           <Box>
             {isAuthenticated ? (
@@ -32,15 +31,13 @@ const Navbar = () => {
                 {data && data.is_admin && (
                   <Button
                     variant="contained"
-                    onClick={() => navigate("/admin")}
-                  >
+                    onClick={() => navigate("/panel-admin")}>
                     Admin panel
                   </Button>
                 )}
                 <Button
                   variant="contained"
-                  onClick={() => navigate("/account")}
-                >
+                  onClick={() => navigate("/account")}>
                   My Account
                 </Button>
                 <Button variant="contained" onClick={onLogout}>

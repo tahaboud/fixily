@@ -27,6 +27,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../ui/sheet";
+import logo from "../../../assets/fixily.webp";
+import translate from "../../../assets/translate.webp";
+import burger_menu from "../../../assets/burger_menu.webp";
+import arrow_down from "../../../assets/arrow_down.webp";
 
 const Navbar = () => {
   const { isAuthenticated, token } = useAppSelector((state) => state.auth);
@@ -75,29 +79,26 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 w-full flex justify-between items-center text-4xl h-[100px] px-4 md:px-20 xl:px-40 bg-secondary z-20 ${
         isScrolled && "shadow-lg bg-white"
-      }`}
-    >
+      }`}>
       <Link to="/" className="block">
-        <img src="/src/assets/fixily.webp" alt="" className="w-[120px]" />
+        <img src={logo} alt="" className="w-[120px]" />
       </Link>
       <div className="gap-4 items-center justify-end w-full max-w-[70%] hidden md:flex">
         <Select onValueChange={handleLanguageChange}>
           <SelectTrigger className="text-myblack font-bold w-fit bg-transparent">
-            <img src="/src/assets/translate.webp" alt="translate" />
+            <img src={translate} alt="translate" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectItem value="fr">
                 <div
-                  className={`${language === "ar" ? "text-right" : ""} w-full`}
-                >
+                  className={`${language === "ar" ? "text-right" : ""} w-full`}>
                   {t("navbar.language.francais")}
                 </div>
               </SelectItem>
               <SelectItem value="ar">
                 <div
-                  className={`${language === "ar" ? "text-right" : ""} w-full`}
-                >
+                  className={`${language === "ar" ? "text-right" : ""} w-full`}>
                   {t("navbar.language.arabe")}
                 </div>
               </SelectItem>
@@ -109,14 +110,12 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             <Button
               className="bg-transparent text-myblack rounded-3xl w-[112px] h-[48px] border border-myblack"
-              onClick={() => navigate("/account")}
-            >
+              onClick={() => navigate("/account")}>
               {t("navbar.account")}
             </Button>
             <Button
               className="bg-primary text-myblack rounded-3xl w-[112px] h-[48px]"
-              onClick={() => (token ? dispatch(logout({ token })) : null)}
-            >
+              onClick={() => (token ? dispatch(logout({ token })) : null)}>
               {t("navbar.logout")}
             </Button>
           </div>
@@ -124,14 +123,12 @@ const Navbar = () => {
           <div className="flex items-center gap-3">
             <Button
               className="bg-transparent text-myblack rounded-3xl w-[112px] h-[48px] border border-myblack"
-              onClick={() => navigate("/login")}
-            >
+              onClick={() => navigate("/login")}>
               {t("navbar.seconnecter")}
             </Button>
             <Button
               className="bg-primary text-myblack rounded-3xl w-[112px] h-[48px]"
-              onClick={() => navigate("/login")}
-            >
+              onClick={() => navigate("/login")}>
               {t("navbar.rejoindre")}
             </Button>
           </div>
@@ -141,7 +138,7 @@ const Navbar = () => {
         <Sheet>
           <SheetTrigger asChild>
             <Button className="border-none bg-transparent">
-              <img src="/src/assets/burger_menu.webp" alt="burger menu" />
+              <img src={burger_menu} alt="burger menu" />
             </Button>
           </SheetTrigger>
           <SheetContent>
@@ -151,7 +148,7 @@ const Navbar = () => {
             <div className="flex flex-col gap-9 p-4">
               <Select onValueChange={handleLanguageChange}>
                 <SelectTrigger className="text-myblack font-bold w-full bg-secondary">
-                  <img src="/src/assets/translate.webp" alt="translate" />
+                  <img src={translate} alt="translate" />
                   <SelectValue
                     placeholder={t("navbar.language.language")}
                     className="hidden"
@@ -163,8 +160,7 @@ const Navbar = () => {
                       <div
                         className={`${
                           language === "ar" ? "text-right" : ""
-                        } w-full`}
-                      >
+                        } w-full`}>
                         {t("navbar.language.francais")}
                       </div>
                     </SelectItem>
@@ -172,8 +168,7 @@ const Navbar = () => {
                       <div
                         className={`${
                           language === "ar" ? "text-right" : ""
-                        } w-full`}
-                      >
+                        } w-full`}>
                         {t("navbar.language.arabe")}
                       </div>
                     </SelectItem>
@@ -186,20 +181,18 @@ const Navbar = () => {
                   <div
                     className={`p-1 flex items-center gap-1 w-full ${
                       language === "ar" ? "flex-row-reverse" : ""
-                    }`}
-                  >
+                    }`}>
                     <div className="flex justify-center items-center w-full">
                       {t("navbar.services")}
                     </div>
-                    <img src="/src/assets/arrow_down.webp" alt="arrow down" />
+                    <img src={arrow_down} alt="arrow down" />
                   </div>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="mt-3">
                   <DropdownMenuLabel
                     className={`${
                       language === "ar" ? "text-right" : ""
-                    } w-full`}
-                  >
+                    } w-full`}>
                     {t("navbar.services")}
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
@@ -207,8 +200,7 @@ const Navbar = () => {
                     <div
                       className={`${
                         language === "ar" ? "text-right" : ""
-                      } w-full`}
-                    >
+                      } w-full`}>
                       وفي
                     </div>
                   </DropdownMenuItem>
@@ -216,8 +208,7 @@ const Navbar = () => {
                     <div
                       className={`${
                         language === "ar" ? "text-right" : ""
-                      } w-full`}
-                    >
+                      } w-full`}>
                       Billing
                     </div>
                   </DropdownMenuItem>
@@ -225,8 +216,7 @@ const Navbar = () => {
                     <div
                       className={`${
                         language === "ar" ? "text-right" : ""
-                      } w-full`}
-                    >
+                      } w-full`}>
                       Team
                     </div>
                   </DropdownMenuItem>
@@ -234,8 +224,7 @@ const Navbar = () => {
                     <div
                       className={`${
                         language === "ar" ? "text-right" : ""
-                      } w-full`}
-                    >
+                      } w-full`}>
                       Subscription
                     </div>
                   </DropdownMenuItem>
@@ -248,14 +237,12 @@ const Navbar = () => {
 
               <Button
                 className="bg-transparent text-myblack rounded-3xl w-full h-[48px] border border-myblack"
-                onClick={() => navigate("/login")}
-              >
+                onClick={() => navigate("/login")}>
                 {t("navbar.seconnecter")}
               </Button>
               <Button
                 className="bg-primary text-myblack rounded-3xl w-full h-[48px]"
-                onClick={() => navigate("/login")}
-              >
+                onClick={() => navigate("/login")}>
                 {t("navbar.rejoindre")}
               </Button>
             </div>

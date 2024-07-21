@@ -30,23 +30,20 @@ const QaSection = () => {
           type="single"
           collapsible
           dir={language === "ar" ? "rtl" : "ltr"}
-          className="w-full border border-myblack rounded-xl px-4 py-4"
-        >
+          className="w-full border border-myblack rounded-xl px-4 py-4">
           <AccordionItem value="item-1">
             <AccordionTrigger className="text-[24px] text-myblack font-semibold">
               <div
                 className={`w-full ${
                   language === "ar" ? "text-right" : "text-left"
-                } px-3`}
-              >
+                } px-3`}>
                 {t("qa.q1")}
               </div>
             </AccordionTrigger>
             <AccordionContent
               className={`text-[18px] text-lightblack px-2  ${
                 language == "ar" ? "text-right" : ""
-              }`}
-            >
+              }`}>
               {t("qa.a1")}
             </AccordionContent>
           </AccordionItem>
@@ -55,16 +52,14 @@ const QaSection = () => {
               <div
                 className={`w-full ${
                   language === "ar" ? "text-right" : "text-left"
-                } px-3`}
-              >
+                } px-3`}>
                 {t("qa.q2")}
               </div>
             </AccordionTrigger>
             <AccordionContent
               className={`text-[18px] text-lightblack px-2  ${
                 language == "ar" ? "text-right" : ""
-              }`}
-            >
+              }`}>
               {t("qa.a2")}
             </AccordionContent>
           </AccordionItem>
@@ -73,16 +68,14 @@ const QaSection = () => {
               <div
                 className={`w-full ${
                   language === "ar" ? "text-right" : "text-left"
-                } px-3`}
-              >
+                } px-3`}>
                 {t("qa.q3")}
               </div>
             </AccordionTrigger>
             <AccordionContent
               className={`text-[18px] text-lightblack px-2  ${
                 language == "ar" ? "text-right" : ""
-              }`}
-            >
+              }`}>
               {t("qa.a3")}
             </AccordionContent>
           </AccordionItem>
@@ -91,16 +84,14 @@ const QaSection = () => {
               <div
                 className={`w-full ${
                   language === "ar" ? "text-right" : "text-left"
-                } px-3`}
-              >
+                } px-3`}>
                 {t("qa.q4")}
               </div>
             </AccordionTrigger>
             <AccordionContent
               className={`text-[18px] text-lightblack px-2  ${
                 language == "ar" ? "text-right" : ""
-              }`}
-            >
+              }`}>
               {t("qa.a4")}
             </AccordionContent>
           </AccordionItem>
@@ -109,16 +100,14 @@ const QaSection = () => {
               <div
                 className={`w-full ${
                   language === "ar" ? "text-right" : "text-left"
-                } px-3`}
-              >
+                } px-3`}>
                 {t("qa.q5")}
               </div>
             </AccordionTrigger>
             <AccordionContent
               className={`text-[18px] text-lightblack px-2  ${
                 language == "ar" ? "text-right" : ""
-              }`}
-            >
+              }`}>
               {t("qa.a5")}
             </AccordionContent>
           </AccordionItem>

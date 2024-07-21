@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import loop from "../../../assets/loop.webp";
 
 type ExploreProps = {
   onSearchCategories: (term: string) => void;
@@ -36,9 +37,8 @@ const Explore = ({ onSearchCategories }: ExploreProps) => {
           <div
             className={`bg-myblue hover:bg-blue-400 w-[55px] h-[55px] flex justify-center items-center rounded-lg absolute ${
               language == "ar" ? "left-2" : "right-2"
-            }  hover:cursor-pointer`}
-          >
-            <img src="/src/assets/loop.webp" alt="" />
+            }  hover:cursor-pointer`}>
+            <img src={loop} alt="" />
           </div>
         </div>
       </div>
